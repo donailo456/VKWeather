@@ -22,6 +22,7 @@
 		E434B6252BA9E00900C58441 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E434B6242BA9E00900C58441 /* NetworkService.swift */; };
 		E434B6272BA9E15400C58441 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E434B6262BA9E15400C58441 /* NetworkError.swift */; };
 		E434B6292BA9E33A00C58441 /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = E434B6282BA9E33A00C58441 /* CurrentWeather.swift */; };
+		E434B62C2BA9E78D00C58441 /* MainCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E434B62B2BA9E78D00C58441 /* MainCellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		E434B6242BA9E00900C58441 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		E434B6262BA9E15400C58441 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		E434B6282BA9E33A00C58441 /* CurrentWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
+		E434B62B2BA9E78D00C58441 /* MainCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCellViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				E434B6152BA9A86500C58441 /* Models */,
 				E434B6142BA9A85800C58441 /* ViewModels */,
 				E434B6132BA9A84F00C58441 /* Views */,
+				E434B62A2BA9E75600C58441 /* ViewModel */,
 				E434B6232BA9DFD600C58441 /* Network */,
 				E434B6122BA9A64000C58441 /* SupportingFilles */,
 			);
@@ -215,6 +218,14 @@
 				E434B6262BA9E15400C58441 /* NetworkError.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		E434B62A2BA9E75600C58441 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E434B62B2BA9E78D00C58441 /* MainCellViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -350,6 +361,7 @@
 				E434B6202BA9DE8B00C58441 /* MainCollectionViewCell.swift in Sources */,
 				E434B61E2BA9DE0C00C58441 /* CollectionViewAdapter.swift in Sources */,
 				E434B5E62BA9A20A00C58441 /* MainViewController.swift in Sources */,
+				E434B62C2BA9E78D00C58441 /* MainCellViewModel.swift in Sources */,
 				E434B5E22BA9A20A00C58441 /* AppDelegate.swift in Sources */,
 				E434B6252BA9E00900C58441 /* NetworkService.swift in Sources */,
 				E434B61A2BA9AA8100C58441 /* AppCoordinator.swift in Sources */,
