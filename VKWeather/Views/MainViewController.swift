@@ -26,21 +26,22 @@ final class MainViewController: UIViewController {
         return stack
     }()
     
-    private let stocksButton: UIButton = {
+    private let currentWeatherButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .red
-        button.setTitle("Stocks", for: .normal)
+        button.setTitle("Current Weather", for: .normal)
         return button
     }()
     
-    private let favButton: UIButton = {
+    private let dailyWeatherButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .red
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Favorite", for: .normal)
+        button.backgroundColor = .red
+        button.setTitle("Current Weather", for: .normal)
         return button
     }()
+    
     
     private let activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
@@ -86,8 +87,8 @@ final class MainViewController: UIViewController {
         stackView.axis = .horizontal
         stackView.backgroundColor = .gray
         
-        stackView.addArrangedSubview(stocksButton)
-        stackView.addArrangedSubview(favButton)
+        stackView.addArrangedSubview(currentWeatherButton)
+        stackView.addArrangedSubview(dailyWeatherButton)
     }
 
 
