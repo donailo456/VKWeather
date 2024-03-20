@@ -13,16 +13,41 @@ final class NetworkService {
         static let host = "api.openweathermap.org"
         static let appid = "0bbe7668f08533a098e6e750b6ab5abf"
         static let pathCurrentWeather = "/data/2.5/weather"
+        
+        static let forecastKey = "e2b510c276c14345bee6cf0d8f0ea975"
+        static let forecastHost = "api.weatherbit.io"
+        static let pathForecast = "/v2.0/forecast/daily"
     }
     
-    private func getURL(_ path: String, lat: String?, lon: String? ) -> URL {
+    private func getURL(_ path: String, lat: String?, lon: String?) -> URL {
         var components = URLComponents()
         components.scheme = Constants.scheme
         components.host = Constants.host
         components.path = path
         let queryItemLat = URLQueryItem(name: "lat", value: lat)
         let queryItemLon = URLQueryItem(name: "lon", value: lon)
+        let queryItemUnits = URLQueryItem(name: "units", value: "metric")
+        let queryItemLang = URLQueryItem(name: "lang", value: "ru")
         let queryItemToken = URLQueryItem(name: "appid", value: Constants.appid)
+        components.queryItems = [queryItemLat, queryItemLon, queryItemToken, queryItemUnits, queryItemLang]
+        
+        guard let url = components.url else {
+            preconditionFailure("Invalid URL components: \(components)")
+        }
+        
+        debugPrint(url)
+        
+        return url
+    }
+    
+    private func getForecastURL(_ path: String, lat: String?, lon: String?) -> URL {
+        var components = URLComponents()
+        components.scheme = Constants.scheme
+        components.host = Constants.forecastHost
+        components.path = path
+        let queryItemLat = URLQueryItem(name: "lat", value: lat)
+        let queryItemLon = URLQueryItem(name: "lon", value: lon)
+        let queryItemToken = URLQueryItem(name: "key", value: Constants.forecastKey)
         components.queryItems = [queryItemLat, queryItemLon, queryItemToken]
         
         guard let url = components.url else {
@@ -53,4 +78,32 @@ final class NetworkService {
             
         } .resume()
     }
+    
+    func getForecastWeather(lat: String?, lon: String?, complition: @escaping (Result<[Datum], NetworkError>) -> Void) {
+        
+        let request = URLRequest(url: getForecastURL(Constants.pathForecast, lat: lat, lon: lon), cachePolicy: URLRequest.CachePolicy.returnCacheDataElseLoad, timeoutInterval: Double.infinity)
+        
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            if error != nil {
+                complition(.failure(.urlError))
+            }
+            
+            else if let data = data {
+                do {
+                    let result = try JSONDecoder().decode(ForecastWeather.self, from: data)
+                    complition(.success(result.data ?? []))
+                } catch {
+                    complition(.failure(.canNotParseData))
+                }
+            }
+            
+        } .resume()
+    }
+    
+    func getData(url: URL, complition: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        DispatchQueue.main.async {
+            URLSession.shared.dataTask(with: url, completionHandler: complition).resume()
+        }
+    }
+    
 }

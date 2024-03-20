@@ -8,13 +8,14 @@
 import Foundation
 import UIKit
 
-struct MainCellViewModel: Hashable {
+struct DetailCellViewModel: CellProtocol, Hashable  {
     
     private enum CodingKeys : String, CodingKey {
         case title, price, symbol
     }
     
     var temp: String?
+    var parameters: String?
     var humidity: String?
     var tempMin: String?
     var tempMax: String?
@@ -24,5 +25,5 @@ struct MainCellViewModel: Hashable {
     var clouds: String?
     var icon: UIImage?
     
-    let id = UUID()
+    var id = UUID()
 }
