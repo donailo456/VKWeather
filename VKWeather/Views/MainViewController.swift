@@ -23,11 +23,11 @@ final class MainViewController: UIViewController {
     private let cityLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.textColor = .black
+        label.textColor = .white
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.font = .systemFont(ofSize: 18, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "foo"
+        label.text = "Поиск геопозиции..."
         return label
     }()
     
@@ -40,16 +40,19 @@ final class MainViewController: UIViewController {
     private let currentWeatherButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .red
-        button.setTitle("Current", for: .normal)
+        //        button.backgroundColor = .red
+        button.titleLabel?.font = .systemFont(ofSize: 22, weight: .bold)
+        button.setTitle("Сейчас", for: .normal)
         return button
     }()
     
     private let dailyWeatherButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .blue
-        button.setTitle("7 days", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
+        button.titleLabel?.alpha = 0.5
+        //        button.backgroundColor = .blue
+        button.setTitle("Прогноз", for: .normal)
         return button
     }()
     
@@ -61,10 +64,9 @@ final class MainViewController: UIViewController {
         indicator.translatesAutoresizingMaskIntoConstraints = false
         return indicator
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
         setupViews()
         bindViewModel()
     }
@@ -79,6 +81,7 @@ final class MainViewController: UIViewController {
     }
     
     private func setupViews() {
+        view.backgroundColor = UIColor.hexStringToUIColor(hex: "#346cad")
         view.addSubview(mainCollectionView)
         view.addSubview(stackView)
         view.addSubview(cityLabel)
@@ -111,10 +114,9 @@ final class MainViewController: UIViewController {
     private func setupStack() {
         stackView.alignment = .fill
         stackView.distribution = .fillEqually
-        stackView.spacing = 8.0
+        stackView.spacing = 0
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.backgroundColor = .gray
         
         stackView.addArrangedSubview(currentWeatherButton)
         stackView.addArrangedSubview(dailyWeatherButton)
@@ -126,27 +128,41 @@ final class MainViewController: UIViewController {
     }
     
     @objc
-    private func dailyAction() {
-        viewModel?.mapCellDataNew()
+    private func dailyAction(_ sender: UIButton) {
+        setupButtons(buttonTouch: sender, buttonUntouch: currentWeatherButton)
+        viewModel?.mapForecastCellData()
         viewModel?.onDataReloadForecast = { [weak self] data in
             self?.adapter.reloadForecast(data)
         }
     }
     
     @objc
-    private func currentAction() {
-        viewModel?.mapCellData()
+    private func currentAction(_ sender: UIButton) {
+        setupButtons(buttonTouch: sender, buttonUntouch: dailyWeatherButton)
+        viewModel?.mapDetailCellData()
         viewModel?.onDataReloadCurr = { [weak self] data in
             self?.adapter.reloadCurr(data)
         }
     }
     
+    private func setupButtons(buttonTouch: UIButton, buttonUntouch: UIButton) {
+        buttonTouch.titleLabel?.font = .systemFont(ofSize: 22, weight: .bold)
+        buttonTouch.titleLabel?.alpha = 1
+        
+        buttonUntouch.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
+        buttonUntouch.titleLabel?.alpha = 0.5
+    }
+    
     
     
     private func bindViewModel() {
-//        viewModel?.getCurrentWeather("10.99", "44.34")
-        viewModel?.mapCellDataNew()
-//        viewModel?.getForecastWeather("10.99", "44.34")
+        self.viewModel?.onIsLoading = { [weak self] isLoading in
+            isLoading ? self?.activityIndicator.startAnimating() : self?.activityIndicator.stopAnimating()
+        }
+        
+        //        viewModel?.getCurrentWeather("10.99", "44.34")
+        viewModel?.mapForecastCellData()
+        //        viewModel?.getForecastWeather("10.99", "44.34")
         viewModel?.onDataReloadCurr = { [weak self] data in
             self?.adapter.reloadCurr(data)
         }
@@ -154,7 +170,7 @@ final class MainViewController: UIViewController {
             self?.adapter.reloadForecast(data)
         }
     }
-
-
+    
+    
 }
 

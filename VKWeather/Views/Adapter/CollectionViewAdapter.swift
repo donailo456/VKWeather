@@ -13,30 +13,26 @@ final class CollectionViewAdapter: NSObject {
         case main
     }
     enum Item: Hashable {
-      case firstSection(DetailCellViewModel)
-      case secondSection(ForecastCellViewModel)
+        case firstSection(DetailCellViewModel)
+        case secondSection(ForecastCellViewModel)
     }
     
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias DataSourceSnapshot = NSDiffableDataSourceSnapshot<Section, Item>
     
-    typealias DataSourceNew = UICollectionViewDiffableDataSource<Section, ForecastCellViewModel>
-    typealias DataSourceSnapshotNew = NSDiffableDataSourceSnapshot<Section, ForecastCellViewModel>
-    
     private weak var collectionView: UICollectionView?
     private var dataSource: DataSource?
-    private var dataSourceNew: DataSourceNew?
     private var snapshot = DataSourceSnapshot()
-    private var snapshotNew = DataSourceSnapshotNew()
     private var detailDataSource: DetailCellViewModel?
-    private var detailDataSourceNew: [ForecastCellViewModel]?
+    private var forecastDataSource: [ForecastCellViewModel]?
     
     
     init(collectionView: UICollectionView) {
-        self.collectionView = collectionView
         super.init()
+        self.collectionView = collectionView
         
         setupCollectionView()
+        collectionView.backgroundColor = UIColor.hexStringToUIColor(hex: "67a5eb")
     }
     
     private func setupCollectionView() {
@@ -57,36 +53,31 @@ final class CollectionViewAdapter: NSObject {
         snapshot = DataSourceSnapshot()
         snapshot.appendSections([Section.main])
         for item in weather {
-               snapshot.appendItems([.secondSection(item)])
-           }
+            snapshot.appendItems([.secondSection(item)])
+        }
         dataSource?.apply(snapshot, animatingDifferences: false)
     }
     
+    private func reload() {
+        DispatchQueue.main.async {
+            self.collectionView?.reloadData()
+        }
+    }
     
-//    private func dummyData() {
-//        var dummyCell: [MainCellViewModel] = []
-//        for _ in 0..<5 {
-//            dummyCell.append(MainCellViewModel(temp: "new"))
-//        }
-//        applySnapshot(weather: dummyCell)
-//    }
+    //MARK: Method for VC
     
     func reloadCurr(_ data: DetailCellViewModel?) {
         configureCollectionViewDataSource()
         detailDataSource = data
         applySnapshot(weather: detailDataSource!)
-        DispatchQueue.main.async {
-            self.collectionView?.reloadData()
-        }
+        reload()
     }
     
     func reloadForecast(_ data: [ForecastCellViewModel]?) {
         configureCollectionViewDataSource()
-        detailDataSourceNew = data
-        applySnapshotNew(weather: detailDataSourceNew ?? [])
-        DispatchQueue.main.async {
-            self.collectionView?.reloadData()
-        }
+        forecastDataSource = data
+        applySnapshotNew(weather: forecastDataSource ?? [])
+        reload()
     }
     
 }
@@ -94,21 +85,6 @@ final class CollectionViewAdapter: NSObject {
 //MARK: - UICollectionViewDataSource
 
 extension CollectionViewAdapter {
-//    private func configureCollectionViewDataSource() {
-//        dataSource = DataSource(collectionView: collectionView ?? UICollectionView(), cellProvider: { (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell? in
-//            if let model = DetailCellViewModel() as? DetailProtocol  {
-//                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailCollectionViewCell.indetifire, for: indexPath) as? DetailCollectionViewCell
-//                cell?.configure(viewModel: itemIdentifier)
-//                return cell
-//            } else if let model = ForecastCellViewModel() as? ForecastProtocol{
-//                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCollectionViewCell.indetifire, for: indexPath) as? ForecastCollectionViewCell
-////                cell?.configure(viewModel: itemIdentifier)
-//                return cell
-//            }
-//            
-//            return UICollectionViewCell()
-//        })
-//    }
     
     private func configureCollectionViewDataSource() {
         dataSource = DataSource(collectionView: collectionView ?? UICollectionView(), cellProvider: { (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell? in
@@ -131,22 +107,20 @@ extension CollectionViewAdapter {
 extension CollectionViewAdapter: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let itemIdentifier = dataSource?.itemIdentifier(for: indexPath) else {
-                return CGSize(width: collectionView.bounds.width - 32, height: collectionView.bounds.height - 80)
+            return CGSize(width: collectionView.bounds.width - 32, height: collectionView.bounds.height - 80)
         }
         switch itemIdentifier {
-            case .firstSection:
-                // Размер для ячейки с типом .firstSection
-                return CGSize(width: collectionView.bounds.width - 32, height: collectionView.bounds.height - 80)
-            case .secondSection:
-                // Размер для ячейки с типом .secondSection
-                return CGSize(width: collectionView.bounds.width - 32, height: 80)
-            }
+        case .firstSection:
+            return CGSize(width: collectionView.bounds.width - 32, height: collectionView.bounds.height - 80)
+        case .secondSection:
+            return CGSize(width: collectionView.bounds.width - 32, height: 130)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        5
+        10
     }
 }

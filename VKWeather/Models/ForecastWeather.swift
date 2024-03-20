@@ -196,14 +196,13 @@ struct ForecastWeather: Codable {
 struct Datum: Codable {
     let clouds: Int?
     let datetime: String?
-    let maxTemp, minTemp: Double?
+    let max_temp, min_temp: Double?
     let pop: Int?
-    let precip, pres: Double?
+    let pres: Double?
     let rh: Int?
-    let slp: Double?
     let snow: Int?
     let temp: Double?
-    let windDir: Int?
-    let windSpd: Double?
+    let wind_dir: Int?
+    let wind_spd: Double?
 }
 

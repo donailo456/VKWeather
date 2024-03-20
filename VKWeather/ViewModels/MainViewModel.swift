@@ -18,6 +18,7 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     var onDataReloadCurr: ((DetailCellViewModel?) -> Void)?
     var onDataReloadForecast: (([ForecastCellViewModel]?) -> Void)?
     var onCity: ((String?) -> Void)?
+    var onIsLoading: ((Bool)-> Void)?
     
     private var networkService = NetworkService()
     private var dataSource: CurrentWeather?
@@ -27,19 +28,20 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     private let locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
     private let geoCoder = CLGeocoder()
-    private var city = "Moscow"
     
     
     func getCurrentWeather(_ lat: String?, _ lon: String?) {
+        onIsLoading?(true)
         networkService.getCurrentWeather(lat: lat, lon: lon) { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let weather):
                     debugPrint(weather)
+                    self.onIsLoading?(false)
                     self.dataSource = weather
-                    self.mapCellData()
-                    self.mapCellDataNew()
+                    self.mapDetailCellData()
+                    self.mapForecastCellData()
                 case .failure(let error):
                     debugPrint(error)
                 }
@@ -84,30 +86,89 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
         }
     }
     
-    func mapCellData() {
+    func mapDetailCellData() {
         
-        self.cellDataSource = dataSource.map({ DetailCellViewModel(temp: String($0.main.temp),
-                                                                parameters: String($0.weather[0].description),
-                                                                 humidity: String($0.main.humidity),
-                                                                 tempMin: String($0.main.tempMin),
-                                                                 tempMax: String($0.main.tempMax),
-                                                                 pressure: String($0.main.pressure),
-                                                                 windSpeed: String($0.wind.speed),
-                                                                 windDeg: String($0.wind.deg),
-                                                                 clouds: String($0.clouds.all)
+        self.cellDataSource = dataSource.map({ DetailCellViewModel(temp: String(Int($0.main?.temp ?? 0.0)),
+                                                                   parameters: String($0.weather[0].description ?? " "),
+                                                                   humidity: String(Int($0.main?.humidity ?? 0)),
+                                                                   tempMin: String(Int($0.main?.temp_min ?? 0)),
+                                                                   tempMax: String(Int($0.main?.temp_max ?? 0) ),
+                                                                   pressure: String($0.main?.pressure ?? 0),
+                                                                   windSpeed: String($0.wind?.speed ?? 0.0),
+                                                                   windDeg: getArrowDirection(degrees: String($0.wind?.deg ?? 0)),
+                                                                   clouds: String($0.clouds?.all ?? 0)
         ) })
         
         downloadImage(icon: dataSource?.weather[0].icon ?? " ")
     }
     
-    func mapCellDataNew() {
-        self.cellForecastDataSource = forecastDataSource?.compactMap( { ForecastCellViewModel(temp: String($0.temp ?? 0.0))})
+    func mapForecastCellData() {
+        self.cellForecastDataSource = forecastDataSource?.compactMap( { ForecastCellViewModel(temp: String($0.temp ?? 0.0),
+                                                                                              tempMax: String($0.max_temp ?? 0.0),
+                                                                                              tempMin: String($0.min_temp ?? 0.0),
+                                                                                              date: dateConvert($0.datetime),
+                                                                                              pres: String($0.pres ?? 0.0),
+                                                                                              rh: String($0.rh ?? 0),
+                                                                                              windDir: getArrowDirection(degrees: String($0.wind_dir ?? 0)),
+                                                                                              windSpd: String($0.wind_spd ?? 0.0))})
         onDataReloadForecast?(cellForecastDataSource)
+    }
+    
+    //MARK: Convector
+    
+    private func dateConvert(_ dateString: String?) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale = Locale(identifier: "ru")
+        
+        if let date = dateFormatter.date(from: dateString ?? "0000-00-00") {
+            let calendar = Calendar.current
+            let weekday = calendar.component(.weekday, from: date)
+            let weekdayName = calendar.weekdaySymbols[weekday - 1]
+            
+            return weekdayName
+        } else {
+            return " "
+        }
+        
+    }
+    
+    private func getArrowDirection(degrees: String) -> String {
+        guard let angle = Double(degrees) else {
+            return ("Неверный формат угла")
+        }
+        
+        var normalizedAngle = angle.truncatingRemainder(dividingBy: 360)
+        if normalizedAngle < 0 {
+            normalizedAngle += 360
+        }
+        
+        switch normalizedAngle {
+        case 0...22.5, 337.5...360:
+            return "↑ С"
+        case 22.5...67.5:
+            return "↗ СВ"
+        case 67.5...112.5:
+            return "→ В"
+        case 112.5...157.5:
+            return "↘ ЮВ"
+        case 157.5...202.5:
+            return "↓ Ю"
+        case 202.5...247.5:
+            return "↙ ЮЗ"
+        case 247.5...292.5:
+            return "← З"
+        case 292.5...337.5:
+            return "↖ СВ"
+        default:
+            return "Ошибка"
+        }
     }
     
     //MARK: - Location
     
     func setupLocation() {
+        onIsLoading?(true)
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
@@ -143,8 +204,6 @@ extension MainViewModel: CLLocationManagerDelegate {
         
         getCurrentWeather(String(lat), String(lon))
         getForecastWeather(String(lat), String(lon))
-        
-        print("\(lon), \(lat)")
     }
 }
 

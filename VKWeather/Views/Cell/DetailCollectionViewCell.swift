@@ -51,11 +51,21 @@ final class DetailCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let pressureLabel: UILabel = {
+    private let detailLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = .black
         label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Дополнительно"
+        return label
+    }()
+    
+    private let pressureLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 16, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Атфосферное давление: "
         return label
@@ -65,7 +75,7 @@ final class DetailCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = .black
-        label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.font = .systemFont(ofSize: 16, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "foo"
         return label
@@ -75,7 +85,7 @@ final class DetailCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = .black
-        label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.font = .systemFont(ofSize: 16, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Влажность: "
         return label
@@ -85,16 +95,27 @@ final class DetailCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = .black
-        label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.font = .systemFont(ofSize: 16, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Скорость ветра: "
         return label
     }()
+    
+    private let windDegLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Направление ветра: "
+        return label
+    }()
+    
     private let currDateLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = .black
-        label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.font = .systemFont(ofSize: 18, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "00-0000-00"
         return label
@@ -120,6 +141,7 @@ final class DetailCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setupStack()
         setupViews()
+       
     }
     
     @available(*, unavailable)
@@ -128,6 +150,7 @@ final class DetailCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupViews() {
+        backgroundColor = UIColor.hexStringToUIColor(hex: "67a5eb")
         self.contentView.addSubview(detailStackView)
         self.contentView.addSubview(mainStackView)
         self.contentView.addSubview(imageView)
@@ -139,20 +162,17 @@ final class DetailCollectionViewCell: UICollectionViewCell {
         tempStackView = UIStackView(arrangedSubviews: [minTempLabel, maxTempLabel])
         tempStackView.translatesAutoresizingMaskIntoConstraints = false
         tempStackView.axis = .horizontal
-//        tempStackView.backgroundColor = .white
-        tempStackView.spacing = 5
+        tempStackView.spacing = 20
         
         mainStackView = UIStackView(arrangedSubviews: [tempLabel, tempStackView, parametersLabel])
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.axis = .vertical
         mainStackView.alignment = .center
-//        mainStackView.backgroundColor = .green
         mainStackView.spacing = 5
         
-        detailStackView = UIStackView(arrangedSubviews: [pressureLabel, cloudsLabel, humidityLabel, windSpeedLabel])
+        detailStackView = UIStackView(arrangedSubviews: [detailLabel, pressureLabel, cloudsLabel, humidityLabel, windSpeedLabel, windDegLabel])
         detailStackView.translatesAutoresizingMaskIntoConstraints = false
         detailStackView.axis = .vertical
-//        detailStackView.backgroundColor = .white
         detailStackView.spacing = 5
         
         
@@ -163,28 +183,30 @@ final class DetailCollectionViewCell: UICollectionViewCell {
             mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-            mainStackView.heightAnchor.constraint(equalToConstant: 120),
+            mainStackView.heightAnchor.constraint(equalToConstant: contentView.frame.height * 0.19),
             
-            imageView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 20),
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            imageView.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: contentView.frame.width * 0.08),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: contentView.frame.width * 0.33),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: contentView.frame.width * -0.33),
+            imageView.bottomAnchor.constraint(equalTo: detailStackView.topAnchor, constant: contentView.frame.width * -0.14),
             
-            detailStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            detailStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            detailStackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 25),
-            detailStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: contentView.bounds.width / -2.8),
+            detailStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: contentView.frame.width * 0.02),
+            detailStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: contentView.frame.width * -0.02),
+            detailStackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: contentView.frame.width * 0.06),
+            detailStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: contentView.bounds.width / -2),
         ])
     }
     
     func configure(viewModel: DetailCellViewModel?) {
-        tempLabel.text = (viewModel?.temp ?? "0") + " C"
+        tempLabel.text = (viewModel?.temp ?? "0") + " °C"
         parametersLabel.text = viewModel?.parameters
-        maxTempLabel.text = "Макc.: " + (viewModel?.tempMax ?? "0") + " C"
-        minTempLabel.text = "Мин.: " + (viewModel?.tempMin ?? "0") + " C"
-        pressureLabel.text? = "Атфосферное давление: " + (viewModel?.pressure ?? "0")
+        maxTempLabel.text = "Макc. ↑:  " + (viewModel?.tempMax ?? "0") + "°"
+        minTempLabel.text = "Мин. ↓:  " + (viewModel?.tempMin ?? "0") + "°"
+        pressureLabel.text? = "Атфосферное давление: " + (viewModel?.pressure ?? "0") + " мм рт. с."
         cloudsLabel.text? = "Облачность " + (viewModel?.clouds ?? "0") + "%"
-        humidityLabel.text? = "Влажность: " + (viewModel?.humidity ?? "0")
-        windSpeedLabel.text? = "Скорость ветра: " + (viewModel?.windSpeed ?? "0")
+        humidityLabel.text? = "Влажность: " + (viewModel?.humidity ?? "0") + " %"
+        windSpeedLabel.text? = "Скорость ветра: " + (viewModel?.windSpeed ?? "0") + " м/c"
+        windDegLabel.text? = "Направление ветра: " + (viewModel?.windDeg ?? "")
         
         imageView.image = viewModel?.icon
     }

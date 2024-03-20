@@ -7,235 +7,33 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "40F1DDFC-ED77-4CA9-A65C-8A0E54EDA422"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "VKWeather/Views/Adapter/CollectionViewAdapter.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
-            landmarkName = "reloadForecast(_:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "40F1DDFC-ED77-4CA9-A65C-8A0E54EDA422 - e4bc9435d2a8611b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "VKWeather.CollectionViewAdapter.reloadNew(Swift.Optional&lt;VKWeather.ForecastCellViewModel&gt;) -&gt; ()"
-                  moduleName = "VKWeather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "79"
-                  endingLineNumber = "79"
-                  offsetFromSymbolStart = "616">
-               </Location>
-               <Location
-                  uuid = "40F1DDFC-ED77-4CA9-A65C-8A0E54EDA422 - e4bc9435d2a8611b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "VKWeather.CollectionViewAdapter.reloadNew(Swift.Optional&lt;VKWeather.ForecastCellViewModel&gt;) -&gt; ()"
-                  moduleName = "VKWeather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "79"
-                  endingLineNumber = "79"
-                  offsetFromSymbolStart = "456">
-               </Location>
-               <Location
-                  uuid = "40F1DDFC-ED77-4CA9-A65C-8A0E54EDA422 - e4bc9435d2a860fc"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "VKWeather.CollectionViewAdapter.reloadNew(Swift.Optional&lt;VKWeather.ForecastCellViewModel&gt;) -&gt; ()"
-                  moduleName = "VKWeather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "84"
-                  endingLineNumber = "84"
-                  offsetFromSymbolStart = "456">
-               </Location>
-               <Location
-                  uuid = "40F1DDFC-ED77-4CA9-A65C-8A0E54EDA422 - 141048ce8f6540f3"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "VKWeather.CollectionViewAdapter.reloadNew(Swift.Optional&lt;Swift.Array&lt;VKWeather.ForecastCellViewModel&gt;&gt;) -&gt; ()"
-                  moduleName = "VKWeather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "86"
-                  endingLineNumber = "86"
-                  offsetFromSymbolStart = "356">
-               </Location>
-               <Location
-                  uuid = "40F1DDFC-ED77-4CA9-A65C-8A0E54EDA422 - e8db332ef3ffeda8"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "VKWeather.CollectionViewAdapter.reloadForecast(Swift.Optional&lt;Swift.Array&lt;VKWeather.ForecastCellViewModel&gt;&gt;) -&gt; ()"
-                  moduleName = "VKWeather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "86"
-                  endingLineNumber = "86"
-                  offsetFromSymbolStart = "356">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3E33770E-525F-46C2-9F91-DAF50B3BC3AB"
+            uuid = "9376BB4C-7281-4068-AF5D-A2247C72DFEE"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VKWeather/ViewModels/MainViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "139"
-            endingLineNumber = "139"
+            startingLineNumber = "205"
+            endingLineNumber = "205"
             landmarkName = "requestWeatherLocation()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "3E33770E-525F-46C2-9F91-DAF50B3BC3AB - 80e91b9645e62c6f"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;__C.CLPlacemark&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in VKWeather.MainViewModel.requestWeatherLocation() -&gt; ()"
-                  moduleName = "VKWeather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/ViewModels/MainViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "138"
-                  endingLineNumber = "138"
-                  offsetFromSymbolStart = "708">
-               </Location>
-               <Location
-                  uuid = "3E33770E-525F-46C2-9F91-DAF50B3BC3AB - 80e91b9645e62c6f"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;__C.CLPlacemark&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in VKWeather.MainViewModel.requestWeatherLocation() -&gt; ()"
-                  moduleName = "VKWeather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/ViewModels/MainViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "138"
-                  endingLineNumber = "138"
-                  offsetFromSymbolStart = "536">
-               </Location>
-               <Location
-                  uuid = "3E33770E-525F-46C2-9F91-DAF50B3BC3AB - 80e91b9645e62c6f"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;__C.CLPlacemark&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in VKWeather.MainViewModel.requestWeatherLocation() -&gt; ()"
-                  moduleName = "VKWeather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/ViewModels/MainViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "138"
-                  endingLineNumber = "138"
-                  offsetFromSymbolStart = "544">
-               </Location>
-               <Location
-                  uuid = "3E33770E-525F-46C2-9F91-DAF50B3BC3AB - 80e91b9645e62c4c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;__C.CLPlacemark&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in VKWeather.MainViewModel.requestWeatherLocation() -&gt; ()"
-                  moduleName = "VKWeather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/ViewModels/MainViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "137"
-                  endingLineNumber = "137"
-                  offsetFromSymbolStart = "544">
-               </Location>
-               <Location
-                  uuid = "3E33770E-525F-46C2-9F91-DAF50B3BC3AB - 80e91b9645e62d8e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;__C.CLPlacemark&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in VKWeather.MainViewModel.requestWeatherLocation() -&gt; ()"
-                  moduleName = "VKWeather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/ViewModels/MainViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "139"
-                  endingLineNumber = "139"
-                  offsetFromSymbolStart = "544">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6A6E9B8F-5E3D-4E53-B70D-B55C54BD2BD8"
+            uuid = "DF2F7552-3813-44F7-AF17-5DC785DF4D25"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "VKWeather/Views/MainViewController.swift"
+            filePath = "VKWeather/ViewModels/MainViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
-            landmarkName = "currentAction()"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
+            landmarkName = "requestWeatherLocation()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "6A6E9B8F-5E3D-4E53-B70D-B55C54BD2BD8 - e80f2f4e7326e142"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;VKWeather.DetailCellViewModel&gt;) -&gt; () in VKWeather.MainViewController.currentAction() -&gt; ()"
-                  moduleName = "VKWeather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/MainViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "140"
-                  endingLineNumber = "140"
-                  offsetFromSymbolStart = "216">
-               </Location>
-               <Location
-                  uuid = "6A6E9B8F-5E3D-4E53-B70D-B55C54BD2BD8 - e80f2f4e7326e142"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;VKWeather.DetailCellViewModel&gt;) -&gt; () in VKWeather.MainViewController.currentAction() -&gt; ()"
-                  moduleName = "VKWeather"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/MainViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "140"
-                  endingLineNumber = "140"
-                  offsetFromSymbolStart = "80">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

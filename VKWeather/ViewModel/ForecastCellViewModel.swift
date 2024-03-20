@@ -15,11 +15,15 @@ struct ForecastCellViewModel: Hashable, CellProtocol {
         case title, price, symbol
     }
     
-    var temp: String?
-    var tempMax: String?
-    var tempMin: String?
-    var date: String?
+    let temp: String?
+    let tempMax: String?
+    let tempMin: String?
+    let date: String?
+    let pres: String?
+    let rh: String?
+    let windDir: String?
+    let windSpd: String?
     
-    var id = UUID()
+    let id = UUID()
     
 }

@@ -14,16 +14,16 @@ struct DetailCellViewModel: CellProtocol, Hashable  {
         case title, price, symbol
     }
     
-    var temp: String?
-    var parameters: String?
-    var humidity: String?
-    var tempMin: String?
-    var tempMax: String?
-    var pressure: String?
-    var windSpeed: String?
-    var windDeg: String?
-    var clouds: String?
+    let temp: String?
+    let parameters: String?
+    let humidity: String?
+    let tempMin: String?
+    let tempMax: String?
+    let pressure: String?
+    let windSpeed: String?
+    let windDeg: String?
+    let clouds: String?
     var icon: UIImage?
     
-    var id = UUID()
+    let id = UUID()
 }
