@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 struct ForecastCellViewModel: Hashable, CellProtocol {
     
     private enum CodingKeys : String, CodingKey {

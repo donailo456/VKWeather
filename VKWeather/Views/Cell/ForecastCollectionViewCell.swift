@@ -14,8 +14,8 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 19, weight: .bold)
+        label.textColor = UIColor.hexStringToUIColor(hex: "f2f3f5")
+        label.font = .systemFont(ofSize: 21, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Макс"
         return label
@@ -24,8 +24,8 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
     private let maxTempLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 15, weight: .bold)
+        label.textColor = UIColor.hexStringToUIColor(hex: "f2f3f5")
+        label.font = .systemFont(ofSize: 17, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Макс"
         return label
@@ -34,8 +34,8 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
     private let minTempLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 15, weight: .bold)
+        label.textColor = UIColor.hexStringToUIColor(hex: "f2f3f5")
+        label.font = .systemFont(ofSize: 17, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Мин: "
         return label
@@ -44,8 +44,8 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
     private let tempLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 19, weight: .bold)
+        label.textColor = UIColor.hexStringToUIColor(hex: "f2f3f5")
+        label.font = .systemFont(ofSize: 21, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Температура"
         return label
@@ -54,7 +54,7 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
     private let rhLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.textColor = .black
+        label.textColor = UIColor.hexStringToUIColor(hex: "f2f3f5")
         label.font = .systemFont(ofSize: 16, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Влажность"
@@ -64,7 +64,7 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
     private let presLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.textColor = .black
+        label.textColor = UIColor.hexStringToUIColor(hex: "f2f3f5")
         label.font = .systemFont(ofSize: 16, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Давление"
@@ -74,7 +74,7 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
     private let windSpeedLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.textColor = .black
+        label.textColor = UIColor.hexStringToUIColor(hex: "f2f3f5")
         label.font = .systemFont(ofSize: 16, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Скорость ветра"
@@ -84,7 +84,7 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
     private let windDirLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.textColor = .black
+        label.textColor = UIColor.hexStringToUIColor(hex: "f2f3f5")
         label.font = .systemFont(ofSize: 16, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Направление ветра"
@@ -99,7 +99,7 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setupStack()
         setupViews()
-        backgroundColor = UIColor.hexStringToUIColor(hex: "#528bcc")
+        backgroundColor = UIColor.hexStringToUIColor(hex: "#346cad")
     }
     
     @available(*, unavailable)
@@ -116,13 +116,11 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupContentView() {
-        //        layer.borderWidth = 1
         layer.cornerRadius = 15
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.5 // Прозрачность тени
-        layer.shadowOffset = CGSize(width: 0, height: 2) // Смещение тени относительно ячейки
-        layer.shadowRadius = 2 // Радиус размытия тени
-        //        layer.borderColor = UIColor.lightGray.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 5) // Смещение тени относительно ячейки
+        layer.shadowRadius = 5 // Радиус размытия тени
     }
     
     private func setupStack() {
@@ -136,7 +134,7 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
         detailStackView.translatesAutoresizingMaskIntoConstraints = false
         detailStackView.axis = .vertical
         detailStackView.alignment = .leading
-        detailStackView.spacing = 5
+        detailStackView.spacing = 9
     }
     
     private func setupConstraints() {
@@ -153,7 +151,7 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configure(viewModel: ForecastCellViewModel?) {
+    func configure(viewModel: ForecastWeatherData?) {
         dateLabel.text = viewModel?.date
         tempLabel.text = (viewModel?.temp ?? "0") + " °C"
         maxTempLabel.text = "↑ " + (viewModel?.tempMax ?? "0") + "°"
@@ -162,7 +160,7 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
         rhLabel.text = "Влажность: " + (viewModel?.rh ?? "0") + "%"
         presLabel.text = "Давление: " + (viewModel?.pres ?? " ") + " мм рт. с."
         windSpeedLabel.text = "Скорость ветра: " + (viewModel?.windSpd ?? "") + " м/c"
-        windDirLabel.text = "Направление ветра: " + (viewModel?.windDir ?? "")
+        windDirLabel.text = "Ветер: " + (viewModel?.windDir ?? "")
     }
 
 }

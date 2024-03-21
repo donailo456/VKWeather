@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,7 +24,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-
-
+    
+    lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "CoreDataWeather")
+        container.loadPersistentStores { description, error in
+            if let error {
+                debugPrint(error)
+            } else {
+                debugPrint("DB", description.url?.absoluteString)
+            }
+        }
+        
+        return container
+    }()
+    
+    func saveContext() {
+        let context = persistentContainer.viewContext
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                fatalError(error.localizedDescription)
+            }
+        }
+    }
+    
+    
 }
 

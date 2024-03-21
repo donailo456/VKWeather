@@ -56,9 +56,6 @@ final class MainViewController: UIViewController {
         return button
     }()
     
-    
-    
-    
     private let activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
         indicator.translatesAutoresizingMaskIntoConstraints = false
@@ -69,6 +66,7 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         bindViewModel()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -80,6 +78,8 @@ final class MainViewController: UIViewController {
         
     }
     
+    //MARK: - Setup View
+    
     private func setupViews() {
         view.backgroundColor = UIColor.hexStringToUIColor(hex: "#346cad")
         view.addSubview(mainCollectionView)
@@ -90,6 +90,7 @@ final class MainViewController: UIViewController {
         setupStack()
         addTargetButton()
     }
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -130,7 +131,8 @@ final class MainViewController: UIViewController {
     @objc
     private func dailyAction(_ sender: UIButton) {
         setupButtons(buttonTouch: sender, buttonUntouch: currentWeatherButton)
-        viewModel?.mapForecastCellData()
+//        viewModel?.mapForecastCellData()
+        viewModel?.transmissionForecastData()
         viewModel?.onDataReloadForecast = { [weak self] data in
             self?.adapter.reloadForecast(data)
         }
@@ -139,7 +141,8 @@ final class MainViewController: UIViewController {
     @objc
     private func currentAction(_ sender: UIButton) {
         setupButtons(buttonTouch: sender, buttonUntouch: dailyWeatherButton)
-        viewModel?.mapDetailCellData()
+//        viewModel?.mapDetailCellData()
+        viewModel?.transmissionCurrData()
         viewModel?.onDataReloadCurr = { [weak self] data in
             self?.adapter.reloadCurr(data)
         }
@@ -159,10 +162,6 @@ final class MainViewController: UIViewController {
         self.viewModel?.onIsLoading = { [weak self] isLoading in
             isLoading ? self?.activityIndicator.startAnimating() : self?.activityIndicator.stopAnimating()
         }
-        
-        //        viewModel?.getCurrentWeather("10.99", "44.34")
-        viewModel?.mapForecastCellData()
-        //        viewModel?.getForecastWeather("10.99", "44.34")
         viewModel?.onDataReloadCurr = { [weak self] data in
             self?.adapter.reloadCurr(data)
         }

@@ -13,8 +13,8 @@ final class CollectionViewAdapter: NSObject {
         case main
     }
     enum Item: Hashable {
-        case firstSection(DetailCellViewModel)
-        case secondSection(ForecastCellViewModel)
+        case firstSection(CurrentWeatherData)
+        case secondSection(ForecastWeatherData)
     }
     
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
@@ -23,8 +23,7 @@ final class CollectionViewAdapter: NSObject {
     private weak var collectionView: UICollectionView?
     private var dataSource: DataSource?
     private var snapshot = DataSourceSnapshot()
-    private var detailDataSource: DetailCellViewModel?
-    private var forecastDataSource: [ForecastCellViewModel]?
+
     
     
     init(collectionView: UICollectionView) {
@@ -32,7 +31,7 @@ final class CollectionViewAdapter: NSObject {
         self.collectionView = collectionView
         
         setupCollectionView()
-        collectionView.backgroundColor = UIColor.hexStringToUIColor(hex: "67a5eb")
+        collectionView.backgroundColor = UIColor.hexStringToUIColor(hex: "#509ec5")
     }
     
     private func setupCollectionView() {
@@ -42,14 +41,14 @@ final class CollectionViewAdapter: NSObject {
         
     }
     
-    private func applySnapshot(weather: DetailCellViewModel) {
+    private func applySnapshot(weather: CurrentWeatherData) {
         snapshot = DataSourceSnapshot()
         snapshot.appendSections([Section.main])
         snapshot.appendItems([.firstSection(weather)])
         dataSource?.apply(snapshot, animatingDifferences: false)
     }
     
-    private func applySnapshotNew(weather: [ForecastCellViewModel]) {
+    private func applySnapshotNew(weather: [ForecastWeatherData]) {
         snapshot = DataSourceSnapshot()
         snapshot.appendSections([Section.main])
         for item in weather {
@@ -66,17 +65,17 @@ final class CollectionViewAdapter: NSObject {
     
     //MARK: Method for VC
     
-    func reloadCurr(_ data: DetailCellViewModel?) {
+    func reloadCurr(_ data: CurrentWeatherData?) {
         configureCollectionViewDataSource()
-        detailDataSource = data
-        applySnapshot(weather: detailDataSource!)
+        guard let detailDataSource = data else { return }
+        applySnapshot(weather: detailDataSource)
         reload()
     }
     
-    func reloadForecast(_ data: [ForecastCellViewModel]?) {
+    func reloadForecast(_ data: [ForecastWeatherData]?) {
         configureCollectionViewDataSource()
-        forecastDataSource = data
-        applySnapshotNew(weather: forecastDataSource ?? [])
+        guard let forecastDataSource = data else { return }
+        applySnapshotNew(weather: forecastDataSource)
         reload()
     }
     
@@ -113,7 +112,7 @@ extension CollectionViewAdapter: UICollectionViewDelegateFlowLayout {
         case .firstSection:
             return CGSize(width: collectionView.bounds.width - 32, height: collectionView.bounds.height - 80)
         case .secondSection:
-            return CGSize(width: collectionView.bounds.width - 32, height: 130)
+            return CGSize(width: collectionView.bounds.width - 32, height: collectionView.bounds.height / 4.6)
         }
     }
     

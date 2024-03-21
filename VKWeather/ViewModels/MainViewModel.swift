@@ -11,20 +11,19 @@ import CoreLocation
 
 protocol MainViewModelProtocol {
     func getCurrentWeather(_ lat: String?, _ lon: String?)
+    func getForecastWeather(_ lat: String?, _ lon: String?)
 }
 
 final class MainViewModel: NSObject, MainViewModelProtocol {
     weak var coordinator: AppCoordinator!
-    var onDataReloadCurr: ((DetailCellViewModel?) -> Void)?
-    var onDataReloadForecast: (([ForecastCellViewModel]?) -> Void)?
+    var onDataReloadCurr: ((CurrentWeatherData?) -> Void)?
+    var onDataReloadForecast: (([ForecastWeatherData]?) -> Void)?
     var onCity: ((String?) -> Void)?
     var onIsLoading: ((Bool)-> Void)?
     
     private var networkService = NetworkService()
     private var dataSource: CurrentWeather?
     private var forecastDataSource: [Datum]?
-    private var cellDataSource: DetailCellViewModel?
-    private var cellForecastDataSource: [ForecastCellViewModel]?
     private let locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
     private let geoCoder = CLGeocoder()
@@ -32,6 +31,7 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     
     func getCurrentWeather(_ lat: String?, _ lon: String?) {
         onIsLoading?(true)
+        CoreDataManager.shared.deleteObjects(CurrentWeatherData.self)
         networkService.getCurrentWeather(lat: lat, lon: lon) { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {
@@ -41,7 +41,7 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
                     self.onIsLoading?(false)
                     self.dataSource = weather
                     self.mapDetailCellData()
-                    self.mapForecastCellData()
+                    
                 case .failure(let error):
                     debugPrint(error)
                 }
@@ -50,6 +50,7 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     }
     
     func getForecastWeather(_ lat: String?, _ lon: String?) {
+        CoreDataManager.shared.deleteObjects(ForecastWeatherData.self)
         networkService.getForecastWeather(lat: lat, lon: lon) { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {
@@ -57,6 +58,7 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
                 case .success(let weather):
                     debugPrint(weather)
                     self.forecastDataSource = weather
+                    self.mapForecastCellData()
                 case .failure(let error):
                     debugPrint(error)
                 }
@@ -64,54 +66,65 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
         }
     }
     
-    private func downloadData(urlString: String?, completion: @escaping (UIImage?) ->Void) {
+    private func downloadData(urlString: String?, completion: @escaping (Data?) ->Void) {
         let url = URL(string: urlString ?? "0")
         networkService.getData(url: url ?? URL(filePath: " ")) { data, response, error in
             guard let data = data, error == nil else { return }
             DispatchQueue.main.async {
                 debugPrint(data)
-                completion(UIImage(data: data))
+                completion(data)
             }
         }
-        
-        
     }
     
     private func downloadImage(icon: String) {
         let urlString = "https://openweathermap.org/img/wn/\(icon)@2x.png"
         print(urlString)
         downloadData(urlString: urlString) { image in
-            self.cellDataSource?.icon = image
-            self.onDataReloadCurr?(self.cellDataSource)
+            CoreDataManager.shared.updateImageWeather(image: image)
+            self.onDataReloadCurr?(CoreDataManager.shared.fetchData().first)
         }
     }
     
-    func mapDetailCellData() {
+    private func mapDetailCellData() {
+        dataSource.map({
+            CoreDataManager.shared.addCurrWeather(temp: String(Int($0.main?.temp ?? 0.0)),
+                                                 parameters: String($0.weather?[0].description ?? " "),
+                                                 humidity: String(Int($0.main?.humidity ?? 0)), 
+                                                 tempMin: String(Int($0.main?.temp_min ?? 0)),
+                                                 tempMax: String(Int($0.main?.temp_max ?? 0)),
+                                                 pressure: String($0.main?.pressure ?? 0), 
+                                                 windSpeed: String($0.wind?.speed ?? 0.0),
+                                                 windDeg: getArrowDirection(degrees: String($0.wind?.deg ?? 0)),
+                                                 clouds: String($0.clouds?.all ?? 0), icon: Data())
+        })
         
-        self.cellDataSource = dataSource.map({ DetailCellViewModel(temp: String(Int($0.main?.temp ?? 0.0)),
-                                                                   parameters: String($0.weather[0].description ?? " "),
-                                                                   humidity: String(Int($0.main?.humidity ?? 0)),
-                                                                   tempMin: String(Int($0.main?.temp_min ?? 0)),
-                                                                   tempMax: String(Int($0.main?.temp_max ?? 0) ),
-                                                                   pressure: String($0.main?.pressure ?? 0),
-                                                                   windSpeed: String($0.wind?.speed ?? 0.0),
-                                                                   windDeg: getArrowDirection(degrees: String($0.wind?.deg ?? 0)),
-                                                                   clouds: String($0.clouds?.all ?? 0)
-        ) })
-        
-        downloadImage(icon: dataSource?.weather[0].icon ?? " ")
+        downloadImage(icon: dataSource?.weather?[0].icon ?? " ")
     }
     
-    func mapForecastCellData() {
-        self.cellForecastDataSource = forecastDataSource?.compactMap( { ForecastCellViewModel(temp: String($0.temp ?? 0.0),
-                                                                                              tempMax: String($0.max_temp ?? 0.0),
-                                                                                              tempMin: String($0.min_temp ?? 0.0),
-                                                                                              date: dateConvert($0.datetime),
-                                                                                              pres: String($0.pres ?? 0.0),
-                                                                                              rh: String($0.rh ?? 0),
-                                                                                              windDir: getArrowDirection(degrees: String($0.wind_dir ?? 0)),
-                                                                                              windSpd: String($0.wind_spd ?? 0.0))})
-        onDataReloadForecast?(cellForecastDataSource)
+    func transmissionCurrData() {
+        self.onDataReloadCurr?(CoreDataManager.shared.fetchData().first)
+    }
+    
+    private func mapForecastCellData() {
+        
+        forecastDataSource?.map({
+            CoreDataManager.shared.addForecastWeather(temp: String($0.temp ?? 0.0),
+                                                      pres: String($0.pres ?? 0.0),
+                                                      rh: String($0.rh ?? 0),
+                                                      tempMin: String($0.min_temp ?? 0.0),
+                                                      tempMax: String($0.max_temp ?? 0.0),
+                                                      date: dateConvert($0.datetime),
+                                                      windSpd: String($0.wind_spd ?? 0.0),
+                                                        windDir: getArrowDirection(degrees: String($0.wind_dir ?? 0)))
+            
+            
+        })
+        
+    }
+    
+    func transmissionForecastData() {
+        self.onDataReloadForecast?(CoreDataManager.shared.fetchData())
     }
     
     //MARK: Convector
@@ -145,21 +158,21 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
         
         switch normalizedAngle {
         case 0...22.5, 337.5...360:
-            return "↑ С"
+            return "↑ Северный"
         case 22.5...67.5:
-            return "↗ СВ"
+            return "↗ Северо-восточный"
         case 67.5...112.5:
-            return "→ В"
+            return "→ Восточный"
         case 112.5...157.5:
-            return "↘ ЮВ"
+            return "↘ Южно-восточный"
         case 157.5...202.5:
-            return "↓ Ю"
+            return "↓ Южный"
         case 202.5...247.5:
-            return "↙ ЮЗ"
+            return "↙ Юго-западный"
         case 247.5...292.5:
-            return "← З"
+            return "← Западный"
         case 292.5...337.5:
-            return "↖ СВ"
+            return "↖ Северо-востоный"
         default:
             return "Ошибка"
         }
