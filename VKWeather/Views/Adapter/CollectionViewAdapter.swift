@@ -51,7 +51,7 @@ final class CollectionViewAdapter: NSObject {
     private func applySnapshotNew(weather: [ForecastWeatherData]) {
         snapshot = DataSourceSnapshot()
         snapshot.appendSections([Section.main])
-        for item in weather {
+        weather.forEach { item in
             snapshot.appendItems([.secondSection(item)])
         }
         dataSource?.apply(snapshot, animatingDifferences: false)

@@ -80,9 +80,9 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     private func downloadImage(icon: String) {
         let urlString = "https://openweathermap.org/img/wn/\(icon)@2x.png"
         print(urlString)
-        downloadData(urlString: urlString) { image in
+        downloadData(urlString: urlString) { [weak self] image in
             CoreDataManager.shared.updateImageWeather(image: image)
-            self.onDataReloadCurr?(CoreDataManager.shared.fetchData().first)
+            self?.onDataReloadCurr?(CoreDataManager.shared.fetchData().first)
         }
     }
     
@@ -90,20 +90,16 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
         dataSource.map({
             CoreDataManager.shared.addCurrWeather(temp: String(Int($0.main?.temp ?? 0.0)),
                                                  parameters: String($0.weather?[0].description ?? " "),
-                                                 humidity: String(Int($0.main?.humidity ?? 0)), 
+                                                 humidity: String(Int($0.main?.humidity ?? 0)),
                                                  tempMin: String(Int($0.main?.temp_min ?? 0)),
                                                  tempMax: String(Int($0.main?.temp_max ?? 0)),
-                                                 pressure: String($0.main?.pressure ?? 0), 
+                                                 pressure: String($0.main?.pressure ?? 0),
                                                  windSpeed: String($0.wind?.speed ?? 0.0),
                                                  windDeg: getArrowDirection(degrees: String($0.wind?.deg ?? 0)),
                                                  clouds: String($0.clouds?.all ?? 0), icon: Data())
         })
         
         downloadImage(icon: dataSource?.weather?[0].icon ?? " ")
-    }
-    
-    func transmissionCurrData() {
-        self.onDataReloadCurr?(CoreDataManager.shared.fetchData().first)
     }
     
     private func mapForecastCellData() {
@@ -123,9 +119,7 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
         
     }
     
-    func transmissionForecastData() {
-        self.onDataReloadForecast?(CoreDataManager.shared.fetchData())
-    }
+    
     
     //MARK: Convector
     
@@ -186,6 +180,14 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
     }
+    
+    func transmissionCurrData() {
+        self.onDataReloadCurr?(CoreDataManager.shared.fetchData().first)
+    }
+    
+    func transmissionForecastData() {
+        self.onDataReloadForecast?(CoreDataManager.shared.fetchData())
+    }
 }
 
 extension MainViewModel: CLLocationManagerDelegate {
@@ -197,7 +199,7 @@ extension MainViewModel: CLLocationManagerDelegate {
         }
     }
     
-    func requestWeatherLocation() {
+    private func requestWeatherLocation() {
         guard let currentLocation = currentLocation else { return }
         
         let lon = currentLocation.coordinate.longitude
