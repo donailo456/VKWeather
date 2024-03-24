@@ -28,16 +28,20 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     private let locationManager = CLLocationManager()
     private var currentLocation: CLLocation?
     private let geoCoder = CLGeocoder()
+    private var coreDataManager: CoreDataManager?
+    
+    init(coreDataManager: CoreDataManager) {
+        self.coreDataManager = coreDataManager
+    }
     
     func getCurrentWeather(_ lat: String?, _ lon: String?) {
         onIsLoading?(true)
-        CoreDataManager.shared.deleteObjects(CurrentWeatherData.self)
+        coreDataManager?.deleteObjects(CurrentWeatherData.self)
         networkService.getCurrentWeather(lat: lat, lon: lon) { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let weather):
-                    debugPrint(weather)
                     self.onIsLoading?(false)
                     self.dataSource = weather
                     self.mapDetailCellData()
@@ -49,13 +53,12 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     }
     
     func getForecastWeather(_ lat: String?, _ lon: String?) {
-        CoreDataManager.shared.deleteObjects(ForecastWeatherData.self)
+        coreDataManager?.deleteObjects(ForecastWeatherData.self)
         networkService.getForecastWeather(lat: lat, lon: lon) { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let weather):
-                    debugPrint(weather)
                     self.forecastDataSource = weather
                     self.mapForecastCellData()
                 case .failure(let error):
@@ -67,9 +70,9 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     
     private func mapDetailCellData() {
         dataSource.map({
-            CoreDataManager.shared.addCurrWeather(
+            coreDataManager?.addCurrWeather(
                 temp: String(Int($0.main?.temp ?? 0.0)),
-                parameters: String($0.weather?[0].description ?? " "),
+                parameters: String($0.weather?[0].description ?? " ").prefix(1).uppercased() + String($0.weather?[0].description ?? " ").dropFirst(),
                 humidity: String(Int($0.main?.humidity ?? 0)),
                 tempMin: String(Int($0.main?.temp_min ?? 0)),
                 tempMax: String(Int($0.main?.temp_max ?? 0)),
@@ -77,16 +80,15 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
                 windSpeed: String($0.wind?.speed ?? 0.0),
                 windDeg: getArrowDirection(degrees: String($0.wind?.deg ?? 0)),
                 clouds: String($0.clouds?.all ?? 0),
-                icon: $0.weather?[0].icon ?? " ",
                 today: today()
             )})
         
-        self.onDataReloadCurr?(CoreDataManager.shared.fetchData().first)
+        self.onDataReloadCurr?(coreDataManager?.fetchData().first)
     }
     
     private func mapForecastCellData() {
         forecastDataSource?.map({
-            CoreDataManager.shared.addForecastWeather(
+            coreDataManager?.addForecastWeather(
                 temp: String($0.temp ?? 0.0),
                 pres: String($0.pres ?? 0.0),
                 rh: String($0.rh ?? 0),
@@ -104,14 +106,14 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     private func weekConvector(_ dateString: String?) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.locale = Locale(identifier: "ru")
         
         if let date = dateFormatter.date(from: dateString ?? "0000-00-00") {
-            let calendar = Calendar.current
+            var calendar = Calendar.current
+            calendar.locale = Locale(identifier: "ru_RU")
             let weekday = calendar.component(.weekday, from: date)
             let weekdayName = calendar.weekdaySymbols[weekday - 1]
             
-            return weekdayName
+            return weekdayName.prefix(1).uppercased() + weekdayName.dropFirst()
         } else {
             return " "
         }
@@ -176,23 +178,16 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     }
     
     func transmissionCurrData() {
-        self.onDataReloadCurr?(CoreDataManager.shared.fetchData().first)
+        self.onDataReloadCurr?(coreDataManager?.fetchData().first)
     }
     
     func transmissionForecastData() {
-        self.onDataReloadForecast?(CoreDataManager.shared.fetchData())
+        self.onDataReloadForecast?(coreDataManager?.fetchData())
     }
 }
 
 extension MainViewModel: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let currentLocation = locations.first {
-            self.currentLocation = currentLocation
-            locationManager.stopUpdatingLocation()
-            requestWeatherForLocation(currentLocation)
-        }
-    }
-
+    
     private func requestWeatherForLocation(_ location: CLLocation) {
         let lon = location.coordinate.longitude
         let lat = location.coordinate.latitude
@@ -209,6 +204,14 @@ extension MainViewModel: CLLocationManagerDelegate {
         
         getCurrentWeather(String(lat), String(lon))
         getForecastWeather(String(lat), String(lon))
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let currentLocation = locations.first {
+            self.currentLocation = currentLocation
+            locationManager.stopUpdatingLocation()
+            requestWeatherForLocation(currentLocation)
+        }
     }
 
     func seacrhCoordinat(_ text: String) {

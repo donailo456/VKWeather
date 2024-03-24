@@ -9,19 +9,39 @@ import UIKit
 import CoreData
 
 //MARK: - CRUD
-public final class CoreDataManager {
-    public static let shared = CoreDataManager()
+final class CoreDataManager {
+    static let shared = CoreDataManager()
     private init() {}
     
-    private var appDelegate: AppDelegate {
-        UIApplication.shared.delegate as! AppDelegate
-    }
-    
     private var context: NSManagedObjectContext {
-        appDelegate.persistentContainer.viewContext
+        persistentContainer.viewContext
     }
     
-    public func addCurrWeather(
+    lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "CoreDataWeather")
+        container.loadPersistentStores { description, error in
+            if let error {
+                debugPrint(error)
+            } else {
+                debugPrint("DB", description.url?.absoluteString as Any)
+            }
+        }
+        
+        return container
+    }()
+    
+    func saveContext() {
+        let context = persistentContainer.viewContext
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                fatalError(error.localizedDescription)
+            }
+        }
+    }
+    
+    func addCurrWeather(
         temp: String,
         parameters: String,
         humidity: String,
@@ -31,7 +51,6 @@ public final class CoreDataManager {
         windSpeed: String,
         windDeg: String,
         clouds: String,
-        icon: String?,
         today: String?
     ){
         guard let weatherDescription = NSEntityDescription.entity(forEntityName: "CurrentWeatherData", in: context) else { return }
@@ -47,13 +66,12 @@ public final class CoreDataManager {
         weather.windSpeed = windSpeed
         weather.windDeg = windDeg
         weather.clouds = clouds
-        weather.icon = icon
         weather.today = today
         
-        appDelegate.saveContext()
+        saveContext()
     }
     
-    public func addForecastWeather(
+    func addForecastWeather(
         temp: String,
         pres: String,
         rh: String,
@@ -78,21 +96,21 @@ public final class CoreDataManager {
         weather.date = date
         weather.week = week
         
-        appDelegate.saveContext()
+        saveContext()
     }
     
-    public func fetchData<T: NSManagedObject>() -> [T] {
+    func fetchData<T: NSManagedObject>() -> [T] {
         do {
             return try context.fetch(T.fetchRequest() as! NSFetchRequest<T>)
         } catch {
-            print("Error fetching data for type \(T.self): \(error)")
+            debugPrint("Error fetching data for type \(T.self): \(error)")
         }
         
         return []
     }
     
     
-    public func deleteObjects<T: NSManagedObject>(_ objectType: T.Type) {
+    func deleteObjects<T: NSManagedObject>(_ objectType: T.Type) {
         let fetchRequest = NSFetchRequest<T>(entityName: String(describing: objectType))
         
         do {
@@ -100,32 +118,10 @@ public final class CoreDataManager {
             for object in objects {
                 context.delete(object)
             }
-            
-            // Сохраняем контекст, чтобы изменения были фиксированы в хранилище данных
             try context.save()
         } catch {
-            print("Failed to delete objects of type \(objectType): \(error)")
+            debugPrint("Failed to delete objects of type \(objectType): \(error)")
         }
     }
-    
-    public func updateImageWeather(image: String?) {
-        
-        let context = appDelegate.persistentContainer.viewContext
-        
-        let fetchRequest: NSFetchRequest<CurrentWeatherData> = CurrentWeatherData.fetchRequest()
-        
-        do {
-            let objects = try context.fetch(fetchRequest)
-            
-            guard let objectToUpdate = objects.first else { return }
-            
-            objectToUpdate.icon = image
-            
-            try context.save()
-        } catch {
-            print("Failed to update object: \(error)")
-        }
-    }
-    
     
 }

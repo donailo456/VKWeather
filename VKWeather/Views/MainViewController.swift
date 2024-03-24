@@ -30,7 +30,7 @@ final class MainViewController: UIViewController {
     private lazy var currentWeatherButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = .systemFont(ofSize: 22, weight: .bold)
+        button.titleLabel?.font = .systemFont(ofSize: 19, weight: .bold)
         button.setTitle("Сейчас", for: .normal)
         button.addTarget(self, action: #selector(currentAction), for: .touchUpInside)
         return button
@@ -56,7 +56,7 @@ final class MainViewController: UIViewController {
         let stack = UIStackView()
         stack.alignment = .fill
         stack.distribution = .fillEqually
-        stack.spacing = 0
+        stack.spacing = 6
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
         return stack
@@ -65,6 +65,7 @@ final class MainViewController: UIViewController {
     private lazy var searchField: UITextField = {
         let textField =  UITextField()
         textField.placeholder = "Поиск города"
+        textField.backgroundColor = UIColor.hexStringToUIColor(hex: "92b2d6")
         textField.font = .systemFont(ofSize: 15, weight: .bold)
         textField.borderStyle = .roundedRect
         textField.layer.cornerRadius = 10.0
@@ -107,7 +108,6 @@ final class MainViewController: UIViewController {
     //MARK: - Setup View
     
     private func setupViews() {
-//        view.backgroundColor = UIColor.hexStringToUIColor(hex: "3c6a9e")
         setupBackgroudColor()
         view.addSubview(mainCollectionView)
         view.addSubview(locationButton)
@@ -124,13 +124,10 @@ final class MainViewController: UIViewController {
         gradientLayer.frame = view?.bounds ?? CGRect(x: 0, y: 0, width: 0, height: 0)
         let startColor = UIColor.hexStringToUIColor(hex: "92b2d6").cgColor
         let endColor = UIColor.hexStringToUIColor(hex: "3c6a9e").cgColor
-        gradientLayer.colors = [startColor, endColor] // Устанавливаем цвета для градиента
-        
-        // Настройка направления градиента (необязательно)
+        gradientLayer.colors = [startColor, endColor] 
         gradientLayer.startPoint = CGPoint(x: 0, y: 1)
         gradientLayer.endPoint = CGPoint(x: 0, y: 0)
         
-        // Добавляем градиентный слой на задний план представления
         view?.layer.insertSublayer(gradientLayer, at: 0)
     }
     
@@ -193,7 +190,7 @@ final class MainViewController: UIViewController {
     }
     
     private func setupButtons(buttonTouch: UIButton, buttonUntouch: UIButton) {
-        buttonTouch.titleLabel?.font = .systemFont(ofSize: 22, weight: .bold)
+        buttonTouch.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         buttonTouch.titleLabel?.alpha = 1
         
         buttonUntouch.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)

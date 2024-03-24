@@ -75,7 +75,7 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = UIColor.hexStringToUIColor(hex: "f2f3f5")
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.font = .systemFont(ofSize: 15, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Макс"
         return label
@@ -85,7 +85,7 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = UIColor.hexStringToUIColor(hex: "f2f3f5")
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.font = .systemFont(ofSize: 15, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Мин: "
         return label
@@ -95,7 +95,7 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = UIColor.hexStringToUIColor(hex: "f2f3f5")
-        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.font = .systemFont(ofSize: 19, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Температура"
         return label
@@ -174,18 +174,17 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
     private func setupContentView() {
         layer.cornerRadius = 15
         layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.5 // Прозрачность тени
-        layer.shadowOffset = CGSize(width: 0, height: 5) // Смещение тени относительно ячейки
-        layer.shadowRadius = 5 // Радиус размытия тени
+        layer.shadowOpacity = 0.5 
+        layer.shadowOffset = CGSize(width: 0, height: 5)
+        layer.shadowRadius = 5
     }
     
     private func setupStack() {
         mainStackView = UIStackView(arrangedSubviews: [weekLabel, dateLabel])
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.axis = .horizontal
-        mainStackView.spacing = 150
+        mainStackView.spacing = 5
         mainStackView.alignment = .fill
-        mainStackView.distribution = .fillEqually
         
         tempStack = UIStackView(arrangedSubviews: [minTempLabel, tempLabel, maxTempLabel])
         tempStack.translatesAutoresizingMaskIntoConstraints = false
@@ -226,17 +225,19 @@ final class ForecastCollectionViewCell: UICollectionViewCell {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-            mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 3),
+            mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 19.5),
+            mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -19.5),
+            mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12.5),
+            mainStackView.bottomAnchor.constraint(equalTo: tempStack.topAnchor),
             
-            tempStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            tempStack.topAnchor.constraint(equalTo: mainStackView.bottomAnchor, constant: 3),
+            tempStack.centerXAnchor.constraint(equalTo: mainStackView.centerXAnchor),
+            tempStack.topAnchor.constraint(equalTo: mainStackView.bottomAnchor),
+            tempStack.bottomAnchor.constraint(equalTo: detailStackView.topAnchor),
             
-            detailStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            detailStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-            detailStackView.topAnchor.constraint(equalTo: tempStack.bottomAnchor, constant: 5),
-            detailStackView.widthAnchor.constraint(equalToConstant: 60),
+            detailStackView.topAnchor.constraint(equalTo: tempStack.bottomAnchor),
+            detailStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 19.5),
+            detailStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -19.5),
+            detailStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
         ])
     }
     

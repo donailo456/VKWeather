@@ -10,10 +10,7 @@ import Foundation
 import CoreData
 
 @objc(ForecastWeatherData)
-public final class ForecastWeatherData: NSManagedObject {
-
-}
-
+public final class ForecastWeatherData: NSManagedObject {}
 
 extension ForecastWeatherData {
 
@@ -30,9 +27,6 @@ extension ForecastWeatherData {
     @NSManaged public var windSpd: String?
     @NSManaged public var date: String?
     @NSManaged public var week: String?
-
 }
 
-extension ForecastWeatherData : Identifiable {
-
-}
+extension ForecastWeatherData : Identifiable {}

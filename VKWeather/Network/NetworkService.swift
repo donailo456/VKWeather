@@ -9,6 +9,8 @@ import Foundation
 
 final class NetworkService {
     
+    let decoder = JSONDecoder()
+    
     private enum Constants {
         static let scheme = "https"
         static let host = "api.openweathermap.org"
@@ -36,8 +38,6 @@ final class NetworkService {
             preconditionFailure("Invalid URL components: \(components)")
         }
         
-        debugPrint(url)
-        
         return url
     }
     
@@ -55,22 +55,19 @@ final class NetworkService {
             preconditionFailure("Invalid URL components: \(components)")
         }
         
-        debugPrint(url)
-        
         return url
     }
     
-    func getCurrentWeather(lat: String?, lon: String?, complition: @escaping (Result<CurrentWeather, NetworkError>) -> Void) {
+    func getCurrentWeather(lat: String?, lon: String?, complition: @escaping (Result<CurrentWeather?, NetworkError>) -> Void) {
         let request = URLRequest(url: getURL(Constants.pathCurrentWeather, lat: lat, lon: lon), cachePolicy: URLRequest.CachePolicy.returnCacheDataElseLoad, timeoutInterval: Double.infinity)
         
         URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
             if error != nil {
                 complition(.failure(.urlError))
             }
-            
             else if let data = data {
                 do {
-                    let result = try JSONDecoder().decode(CurrentWeather.self, from: data)
+                    let result = try self?.decoder.decode(CurrentWeather.self, from: data)
                     complition(.success(result))
                 } catch {
                     complition(.failure(.canNotParseData))
@@ -90,8 +87,8 @@ final class NetworkService {
             }
             else if let data = data {
                 do {
-                    let result = try JSONDecoder().decode(ForecastWeather.self, from: data)
-                    complition(.success(result.data ?? []))
+                    let result = try self?.decoder.decode(ForecastWeather.self, from: data)
+                    complition(.success(result?.data ?? []))
                 } catch {
                     complition(.failure(.canNotParseData))
                 }

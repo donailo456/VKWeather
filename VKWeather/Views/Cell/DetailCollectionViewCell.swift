@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 final class DetailCollectionViewCell: UICollectionViewCell {
+    
     static let identifier = "DetailCollectionViewCell"
     typealias ViewModel = DefaultCollectionCellViewModel
     
@@ -58,7 +59,6 @@ final class DetailCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setupStack()
         setupViews()
-       
     }
     
     @available(*, unavailable)

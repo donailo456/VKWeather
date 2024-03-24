@@ -11,12 +11,13 @@ import UIKit
 final class CollectionViewAdapter: NSObject {
     
     enum Section {
-        case main
+        case detail
+        case forecast
     }
     
     enum Item: Hashable {
-        case firstSection(Cells?)
-        case secondSection(ForecastWeatherData)
+        case detailSection(Cells?)
+        case forecastSection(ForecastWeatherData)
     }
     
     enum Cells: Int, CaseIterable {
@@ -37,18 +38,7 @@ final class CollectionViewAdapter: NSObject {
     private var dataSource: DataSource?
     private var snapshot = DataSourceSnapshot()
     
-    private var cellTypes: [Cells] {
-        var cells: [Cells] = []
-        cells.append(.mainTemp)
-        cells.append(.detailTemp)
-        cells.append(.parameters)
-        cells.append(.windSpeed)
-        cells.append(.windDeg)
-        cells.append(.humidity)
-        cells.append(.press)
-        cells.append(.clouds)
-        return cells
-    }
+    private var cellTypes: [Cells] = [.mainTemp, .detailTemp, .parameters, .windSpeed, .windDeg, .humidity, .press, .clouds]
     
     private var cellViewModelByType: [Cells: CellProtocol]?
 
@@ -57,10 +47,10 @@ final class CollectionViewAdapter: NSObject {
         self.collectionView = collectionView
         
         setupCollectionView()
+        configureCollectionViewDataSource()
     }
     
     private func setupCollectionView() {
-//        self.collectionView?.backgroundColor = UIColor.hexStringToUIColor(hex: "92b2d6")
         self.collectionView?.backgroundColor = .clear
         self.collectionView?.delegate = self
         self.collectionView?.register(DetailCollectionViewCell.self, forCellWithReuseIdentifier: DetailCollectionViewCell.identifier)
@@ -70,10 +60,10 @@ final class CollectionViewAdapter: NSObject {
     private func applyCurrentSnapshot(weather: CurrentWeatherData) {
         mapCell(weather: weather)
         snapshot = DataSourceSnapshot()
-        snapshot.appendSections([Section.main])
+        snapshot.appendSections([Section.detail])
         
         cellTypes.forEach{ item in
-            snapshot.appendItems([.firstSection(item)])
+            snapshot.appendItems([.detailSection(item)])
         }
         
         dataSource?.apply(snapshot, animatingDifferences: false)
@@ -81,9 +71,9 @@ final class CollectionViewAdapter: NSObject {
     
     private func applyForecastSnapshot(weather: [ForecastWeatherData]) {
         snapshot = DataSourceSnapshot()
-        snapshot.appendSections([Section.main])
+        snapshot.appendSections([Section.forecast])
         weather.forEach { item in
-            snapshot.appendItems([.secondSection(item)])
+            snapshot.appendItems([.forecastSection(item)])
         }
         dataSource?.apply(snapshot, animatingDifferences: false)
     }
@@ -158,14 +148,12 @@ final class CollectionViewAdapter: NSObject {
     //MARK: Method for VC
     
     func reloadCurr(_ data: CurrentWeatherData?) {
-        configureCollectionViewDataSource()
         guard let detailDataSource = data else { return }
         applyCurrentSnapshot(weather: detailDataSource)
         reload()
     }
     
     func reloadForecast(_ data: [ForecastWeatherData]?) {
-        configureCollectionViewDataSource()
         guard let forecastDataSource = data else { return }
         applyForecastSnapshot(weather: forecastDataSource)
         reload()
@@ -176,16 +164,15 @@ final class CollectionViewAdapter: NSObject {
 //MARK: - UICollectionViewDataSource
 
 extension CollectionViewAdapter {
-    
     private func configureCollectionViewDataSource() {
         dataSource = DataSource(collectionView: collectionView ?? UICollectionView(), cellProvider: { (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell? in
             switch itemIdentifier {
-            case .firstSection(let one):
+            case .detailSection(let one):
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailCollectionViewCell.identifier, for: indexPath) as? DetailCollectionViewCell
                 let viewModel = self.cellViewModelByType?[one ?? .detailTemp]
                 cell?.configure(viewModel: viewModel)
                 return cell
-            case .secondSection(let two):
+            case .forecastSection(let two):
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastCollectionViewCell.identifier, for: indexPath) as? ForecastCollectionViewCell
                 cell?.configure(viewModel: two)
                 return cell
@@ -202,14 +189,14 @@ extension CollectionViewAdapter: UICollectionViewDelegateFlowLayout {
             return CGSize(width: collectionView.bounds.width - 32, height: collectionView.bounds.height - 80)
         }
         switch itemIdentifier {
-        case .firstSection:
+        case .detailSection:
             if indexPath.item >= 1 {
                 return CGSize(width: collectionView.bounds.width - 32, height: collectionView.bounds.height / 13)
             } else {
-                return CGSize(width: collectionView.bounds.width - 32, height: collectionView.bounds.height / 6.5)
+                return CGSize(width: collectionView.bounds.width - 32, height: collectionView.bounds.height / 5.5)
             }
-        case .secondSection:
-            return CGSize(width: collectionView.bounds.width - 32, height: collectionView.bounds.height / 4.6)
+        case .forecastSection:
+            return CGSize(width: collectionView.bounds.width - 32, height: collectionView.bounds.height / 3.8)
         }
     }
     
