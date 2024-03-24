@@ -23,7 +23,7 @@
 
 # Запуск
 
-```http
+```
     git clone https://github.com/donailo456/VKWeather.git
     pod install
     cmd+r в Xcode 
