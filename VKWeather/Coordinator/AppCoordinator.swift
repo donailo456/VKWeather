@@ -21,7 +21,7 @@ final class AppCoordinator: CoordinatorProtocol {
         showMainVC()
     }
     
-    func showMainVC() {
+    private func showMainVC() {
         let mainViewController = MainViewController()
         let mainViewModel = MainViewModel.init()
         mainViewModel.coordinator = self

@@ -21,16 +21,19 @@ public final class CoreDataManager {
         appDelegate.persistentContainer.viewContext
     }
     
-    public func addCurrWeather(temp: String,
-                               parameters: String,
-                               humidity: String,
-                               tempMin: String,
-                               tempMax: String,
-                               pressure: String,
-                               windSpeed: String,
-                               windDeg: String,
-                               clouds: String,
-                               icon: Data?) {
+    public func addCurrWeather(
+        temp: String,
+        parameters: String,
+        humidity: String,
+        tempMin: String,
+        tempMax: String,
+        pressure: String,
+        windSpeed: String,
+        windDeg: String,
+        clouds: String,
+        icon: String?,
+        today: String?
+    ){
         guard let weatherDescription = NSEntityDescription.entity(forEntityName: "CurrentWeatherData", in: context) else { return }
         
         let weather = CurrentWeatherData(entity: weatherDescription, insertInto: context)
@@ -45,18 +48,22 @@ public final class CoreDataManager {
         weather.windDeg = windDeg
         weather.clouds = clouds
         weather.icon = icon
+        weather.today = today
         
         appDelegate.saveContext()
     }
     
-    public func addForecastWeather(temp: String,
-                                   pres: String,
-                                   rh: String,
-                                   tempMin: String,
-                                   tempMax: String,
-                                   date: String,
-                                   windSpd: String,
-                                   windDir: String) {
+    public func addForecastWeather(
+        temp: String,
+        pres: String,
+        rh: String,
+        tempMin: String,
+        tempMax: String,
+        date: String,
+        week: String,
+        windSpd: String,
+        windDir: String
+    ){
         guard let weatherDescription = NSEntityDescription.entity(forEntityName: "ForecastWeatherData", in: context) else { return }
         
         let weather = ForecastWeatherData(entity: weatherDescription, insertInto: context)
@@ -69,6 +76,7 @@ public final class CoreDataManager {
         weather.windSpd = windSpd
         weather.windDir = windDir
         weather.date = date
+        weather.week = week
         
         appDelegate.saveContext()
     }
@@ -82,47 +90,25 @@ public final class CoreDataManager {
         
         return []
     }
-
+    
     
     public func deleteObjects<T: NSManagedObject>(_ objectType: T.Type) {
-            let fetchRequest = NSFetchRequest<T>(entityName: String(describing: objectType))
-            
-            do {
-                let objects = try context.fetch(fetchRequest)
-                for object in objects {
-                    context.delete(object)
-                }
-                
-                // Сохраняем контекст, чтобы изменения были фиксированы в хранилище данных
-                try context.save()
-            } catch {
-                print("Failed to delete objects of type \(objectType): \(error)")
-            }
-        }
-    
-    public func updateWeather() {
-        
-        let context = appDelegate.persistentContainer.viewContext
-        
-        let fetchRequest: NSFetchRequest<CurrentWeatherData> = CurrentWeatherData.fetchRequest()
+        let fetchRequest = NSFetchRequest<T>(entityName: String(describing: objectType))
         
         do {
             let objects = try context.fetch(fetchRequest)
-            
-            guard let objectToUpdate = objects.first else {
-                return
+            for object in objects {
+                context.delete(object)
             }
             
-            objectToUpdate.temp = "100"
-            objectToUpdate.tempMin = "10"
-            
+            // Сохраняем контекст, чтобы изменения были фиксированы в хранилище данных
             try context.save()
         } catch {
-            print("Failed to update object: \(error)")
+            print("Failed to delete objects of type \(objectType): \(error)")
         }
     }
     
-    public func updateImageWeather(image: Data?) {
+    public func updateImageWeather(image: String?) {
         
         let context = appDelegate.persistentContainer.viewContext
         
@@ -131,9 +117,7 @@ public final class CoreDataManager {
         do {
             let objects = try context.fetch(fetchRequest)
             
-            guard let objectToUpdate = objects.first else {
-                return
-            }
+            guard let objectToUpdate = objects.first else { return }
             
             objectToUpdate.icon = image
             

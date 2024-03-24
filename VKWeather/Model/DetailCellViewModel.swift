@@ -11,7 +11,16 @@ import UIKit
 struct DetailCellViewModel: CellProtocol, Hashable  {
     
     private enum CodingKeys : String, CodingKey {
-        case title, price, symbol
+        case temp
+        case parameters
+        case humidity
+        case tempMin
+        case tempMax
+        case pressure
+        case windSpeed
+        case windDeg
+        case clouds
+        case icon
     }
     
     let temp: String?
@@ -23,7 +32,7 @@ struct DetailCellViewModel: CellProtocol, Hashable  {
     let windSpeed: String?
     let windDeg: String?
     let clouds: String?
+    let id = UUID()
     var icon: UIImage?
     
-    let id = UUID()
 }

@@ -11,7 +11,14 @@ import UIKit
 struct ForecastCellViewModel: Hashable, CellProtocol {
     
     private enum CodingKeys : String, CodingKey {
-        case title, price, symbol
+        case temp
+        case tempMin
+        case tempMax
+        case date
+        case pres
+        case rh
+        case windDir
+        case windSpd
     }
     
     let temp: String?
@@ -22,7 +29,6 @@ struct ForecastCellViewModel: Hashable, CellProtocol {
     let rh: String?
     let windDir: String?
     let windSpd: String?
-    
     let id = UUID()
     
 }

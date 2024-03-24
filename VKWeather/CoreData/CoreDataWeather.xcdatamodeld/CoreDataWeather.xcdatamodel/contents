@@ -9,6 +9,7 @@
         <attribute name="temp" attributeType="String" customClassName="CurrentWeather"/>
         <attribute name="tempMax" attributeType="String" customClassName="CurrentWeather"/>
         <attribute name="tempMin" attributeType="String" customClassName="CurrentWeather"/>
+        <attribute name="today" optional="YES" attributeType="String"/>
         <attribute name="windDeg" attributeType="String" customClassName="CurrentWeather"/>
         <attribute name="windSpeed" attributeType="String" customClassName="CurrentWeather"/>
     </entity>
@@ -19,6 +20,7 @@
         <attribute name="temp" attributeType="String"/>
         <attribute name="tempMax" attributeType="String"/>
         <attribute name="tempMin" attributeType="String"/>
+        <attribute name="week" optional="YES" attributeType="String"/>
         <attribute name="windDir" attributeType="String"/>
         <attribute name="windSpd" attributeType="String"/>
     </entity>

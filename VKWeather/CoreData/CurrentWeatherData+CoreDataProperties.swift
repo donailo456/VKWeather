@@ -30,7 +30,8 @@ extension CurrentWeatherData {
     @NSManaged public var windSpeed: String?
     @NSManaged public var windDeg: String?
     @NSManaged public var clouds: String?
-    @NSManaged public var icon: Data?
+    @NSManaged public var icon: String?
+    @NSManaged public var today: String?
 
 }
 

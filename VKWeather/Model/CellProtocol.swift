@@ -7,6 +7,4 @@
 
 import Foundation
 
-protocol CellProtocol: Hashable {
-    var id: UUID { get }
-}
+protocol CellProtocol {}

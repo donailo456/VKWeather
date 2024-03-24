@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - ForecastWeather
+
 struct ForecastWeather: Codable {
     let cityName, countryCode: String?
     let data: [Datum]?
@@ -16,6 +17,7 @@ struct ForecastWeather: Codable {
 }
 
 // MARK: - Datum
+
 struct Datum: Codable {
     let clouds: Int?
     let datetime: String?

@@ -29,6 +29,7 @@ extension ForecastWeatherData {
     @NSManaged public var windDir: String?
     @NSManaged public var windSpd: String?
     @NSManaged public var date: String?
+    @NSManaged public var week: String?
 
 }
 

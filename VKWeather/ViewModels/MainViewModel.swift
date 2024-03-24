@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import CoreLocation
+import MapKit
 
 protocol MainViewModelProtocol {
     func getCurrentWeather(_ lat: String?, _ lon: String?)
@@ -28,7 +29,6 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     private var currentLocation: CLLocation?
     private let geoCoder = CLGeocoder()
     
-    
     func getCurrentWeather(_ lat: String?, _ lon: String?) {
         onIsLoading?(true)
         CoreDataManager.shared.deleteObjects(CurrentWeatherData.self)
@@ -41,7 +41,6 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
                     self.onIsLoading?(false)
                     self.dataSource = weather
                     self.mapDetailCellData()
-                    
                 case .failure(let error):
                     debugPrint(error)
                 }
@@ -66,64 +65,43 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
         }
     }
     
-    private func downloadData(urlString: String?, completion: @escaping (Data?) ->Void) {
-        let url = URL(string: urlString ?? "0")
-        networkService.getData(url: url ?? URL(filePath: " ")) { data, response, error in
-            guard let data = data, error == nil else { return }
-            DispatchQueue.main.async {
-                debugPrint(data)
-                completion(data)
-            }
-        }
-    }
-    
-    private func downloadImage(icon: String) {
-        let urlString = "https://openweathermap.org/img/wn/\(icon)@2x.png"
-        print(urlString)
-        downloadData(urlString: urlString) { [weak self] image in
-            CoreDataManager.shared.updateImageWeather(image: image)
-            self?.onDataReloadCurr?(CoreDataManager.shared.fetchData().first)
-        }
-    }
-    
     private func mapDetailCellData() {
         dataSource.map({
-            CoreDataManager.shared.addCurrWeather(temp: String(Int($0.main?.temp ?? 0.0)),
-                                                 parameters: String($0.weather?[0].description ?? " "),
-                                                 humidity: String(Int($0.main?.humidity ?? 0)),
-                                                 tempMin: String(Int($0.main?.temp_min ?? 0)),
-                                                 tempMax: String(Int($0.main?.temp_max ?? 0)),
-                                                 pressure: String($0.main?.pressure ?? 0),
-                                                 windSpeed: String($0.wind?.speed ?? 0.0),
-                                                 windDeg: getArrowDirection(degrees: String($0.wind?.deg ?? 0)),
-                                                 clouds: String($0.clouds?.all ?? 0), icon: Data())
-        })
+            CoreDataManager.shared.addCurrWeather(
+                temp: String(Int($0.main?.temp ?? 0.0)),
+                parameters: String($0.weather?[0].description ?? " "),
+                humidity: String(Int($0.main?.humidity ?? 0)),
+                tempMin: String(Int($0.main?.temp_min ?? 0)),
+                tempMax: String(Int($0.main?.temp_max ?? 0)),
+                pressure: String($0.main?.pressure ?? 0),
+                windSpeed: String($0.wind?.speed ?? 0.0),
+                windDeg: getArrowDirection(degrees: String($0.wind?.deg ?? 0)),
+                clouds: String($0.clouds?.all ?? 0),
+                icon: $0.weather?[0].icon ?? " ",
+                today: today()
+            )})
         
-        downloadImage(icon: dataSource?.weather?[0].icon ?? " ")
+        self.onDataReloadCurr?(CoreDataManager.shared.fetchData().first)
     }
     
     private func mapForecastCellData() {
-        
         forecastDataSource?.map({
-            CoreDataManager.shared.addForecastWeather(temp: String($0.temp ?? 0.0),
-                                                      pres: String($0.pres ?? 0.0),
-                                                      rh: String($0.rh ?? 0),
-                                                      tempMin: String($0.min_temp ?? 0.0),
-                                                      tempMax: String($0.max_temp ?? 0.0),
-                                                      date: dateConvert($0.datetime),
-                                                      windSpd: String($0.wind_spd ?? 0.0),
-                                                        windDir: getArrowDirection(degrees: String($0.wind_dir ?? 0)))
-            
-            
-        })
-        
+            CoreDataManager.shared.addForecastWeather(
+                temp: String($0.temp ?? 0.0),
+                pres: String($0.pres ?? 0.0),
+                rh: String($0.rh ?? 0),
+                tempMin: String($0.min_temp ?? 0.0),
+                tempMax: String($0.max_temp ?? 0.0),
+                date: dateConvert($0.datetime),
+                week: weekConvector($0.datetime),
+                windSpd: String($0.wind_spd ?? 0.0),
+                windDir: getArrowDirection(degrees: String($0.wind_dir ?? 0))
+            )})
     }
-    
-    
     
     //MARK: Convector
     
-    private func dateConvert(_ dateString: String?) -> String {
+    private func weekConvector(_ dateString: String?) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         dateFormatter.locale = Locale(identifier: "ru")
@@ -137,7 +115,23 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
         } else {
             return " "
         }
+    }
+    
+    private func today() -> String {
+        let getDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        return dateFormatter.string(from: getDate)
+    }
+    
+    private func dateConvert(_ dateString: String?) -> String {
+        let inputDateFormatter = DateFormatter()
+        inputDateFormatter.dateFormat = "yyyy-MM-dd"
+        let date = inputDateFormatter.date(from: dateString ?? " ")
         
+        let outputDateFormatter = DateFormatter()
+        outputDateFormatter.dateFormat = "dd.MM"
+        return outputDateFormatter.string(from: date!)
     }
     
     private func getArrowDirection(degrees: String) -> String {
@@ -191,34 +185,107 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
 }
 
 extension MainViewModel: CLLocationManagerDelegate {
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        if !locations.isEmpty, currentLocation == nil {
+//            currentLocation = locations.first
+//            locationManager.stopUpdatingLocation()
+//            requestWeatherLocation()
+//        }
+//    }
+//    
+//    private func requestWeatherLocation() {
+//        guard let currentLocation = currentLocation else { return }
+//        
+//        let lon = currentLocation.coordinate.longitude
+//        let lat = currentLocation.coordinate.latitude
+//        
+//        
+//        geoCoder.reverseGeocodeLocation(currentLocation) { [weak self] placemarks, error in
+//            guard let placemark = placemarks?.first else {
+//                return
+//            }
+//            
+//            if let city = placemark.locality {
+//                self?.onCity?(city)
+//            }
+//        }
+//        
+//        
+//        getCurrentWeather(String(lat), String(lon))
+//        getForecastWeather(String(lat), String(lon))
+//    }
+//    
+//    func seacrhCoordinat(_ text: String) {
+//        let searchRequest = MKLocalSearch.Request()
+//        searchRequest.naturalLanguageQuery = text
+//        let search = MKLocalSearch(request: searchRequest)
+//        
+//        DispatchQueue.global().async {
+//            search.start { [weak self] response, error in
+//                guard let response = response else {
+//                    debugPrint("Error: \(error?.localizedDescription ?? "Unknown error")")
+//                    return
+//                }
+//                
+//                for item in response.mapItems {
+//                    debugPrint("coordinats: \(item.placemark.coordinate)")
+//                    let lat = String(item.placemark.coordinate.latitude)
+//                    let long = String(item.placemark.coordinate.longitude)
+//                    self?.onCity?(item.placemark.locality)
+//                    self?.getCurrentWeather(lat, long)
+//                    self?.getForecastWeather(lat, long)
+//                }
+//            }
+//        }
+//    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if !locations.isEmpty, currentLocation == nil {
-            currentLocation = locations.first
+        if let currentLocation = locations.first {
+            self.currentLocation = currentLocation
             locationManager.stopUpdatingLocation()
-            requestWeatherLocation()
+            requestWeatherForLocation(currentLocation)
         }
     }
-    
-    private func requestWeatherLocation() {
-        guard let currentLocation = currentLocation else { return }
+
+    private func requestWeatherForLocation(_ location: CLLocation) {
+        let lon = location.coordinate.longitude
+        let lat = location.coordinate.latitude
         
-        let lon = currentLocation.coordinate.longitude
-        let lat = currentLocation.coordinate.latitude
-        
-        
-        geoCoder.reverseGeocodeLocation(currentLocation) { placemarks, error in
+        geoCoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             guard let placemark = placemarks?.first else {
                 return
             }
             
             if let city = placemark.locality {
-                self.onCity?(city)
+                self?.onCity?(city)
             }
         }
-        
         
         getCurrentWeather(String(lat), String(lon))
         getForecastWeather(String(lat), String(lon))
     }
+
+    func seacrhCoordinat(_ text: String) {
+        let searchRequest = MKLocalSearch.Request()
+        searchRequest.naturalLanguageQuery = text
+        let search = MKLocalSearch(request: searchRequest)
+        
+        DispatchQueue.global().async {
+            search.start { [weak self] response, error in
+                guard let response = response else {
+                    debugPrint("Error: \(error?.localizedDescription ?? "Unknown error")")
+                    return
+                }
+                
+                for item in response.mapItems {
+                    let coordinate = item.placemark.coordinate
+                    let lat = coordinate.latitude
+                    let long = coordinate.longitude
+                    self?.requestWeatherForLocation(CLLocation(latitude: lat, longitude: long))
+                }
+            }
+        }
+    }
+
 }
 

@@ -7,63 +7,233 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6BEC6E81-F176-4089-9277-8FBE7223BF8B"
-            shouldBeEnabled = "No"
+            uuid = "CCEC08DF-297E-48BE-870C-A8A6D9486B42"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "VKWeather/CoreData/CoreDataManager.swift"
+            filePath = "VKWeather/Views/Adapter/CollectionViewAdapter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
-            landmarkName = "updateWeather()"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
+            landmarkName = "configureCollectionViewDataSource()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "CCEC08DF-297E-48BE-870C-A8A6D9486B42 - d1ba17838bc384b2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VKWeather.CollectionViewAdapter.configureCollectionViewDataSource() -&gt; ()"
+                  moduleName = "VKWeather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "197"
+                  endingLineNumber = "197"
+                  offsetFromSymbolStart = "32">
+               </Location>
+               <Location
+                  uuid = "CCEC08DF-297E-48BE-870C-A8A6D9486B42 - bf8911c72f5a3731"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.UICollectionView, Foundation.IndexPath, VKWeather.CollectionViewAdapter.Item) -&gt; Swift.Optional&lt;__C.UICollectionViewCell&gt; in VKWeather.CollectionViewAdapter.configureCollectionViewDataSource() -&gt; ()"
+                  moduleName = "VKWeather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "197"
+                  endingLineNumber = "197"
+                  offsetFromSymbolStart = "908">
+               </Location>
+               <Location
+                  uuid = "CCEC08DF-297E-48BE-870C-A8A6D9486B42 - bf8911c72f5a3963"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.UICollectionView, Foundation.IndexPath, VKWeather.CollectionViewAdapter.Item) -&gt; Swift.Optional&lt;__C.UICollectionViewCell&gt; in VKWeather.CollectionViewAdapter.configureCollectionViewDataSource() -&gt; ()"
+                  moduleName = "VKWeather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "179"
+                  endingLineNumber = "179"
+                  offsetFromSymbolStart = "924">
+               </Location>
+               <Location
+                  uuid = "CCEC08DF-297E-48BE-870C-A8A6D9486B42 - bf8911c72f5a3963"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.UICollectionView, Foundation.IndexPath, VKWeather.CollectionViewAdapter.Item) -&gt; Swift.Optional&lt;__C.UICollectionViewCell&gt; in VKWeather.CollectionViewAdapter.configureCollectionViewDataSource() -&gt; ()"
+                  moduleName = "VKWeather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "179"
+                  endingLineNumber = "179"
+                  offsetFromSymbolStart = "1032">
+               </Location>
+               <Location
+                  uuid = "CCEC08DF-297E-48BE-870C-A8A6D9486B42 - bf8911c72f5a39a5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.UICollectionView, Foundation.IndexPath, VKWeather.CollectionViewAdapter.Item) -&gt; Swift.Optional&lt;__C.UICollectionViewCell&gt; in VKWeather.CollectionViewAdapter.configureCollectionViewDataSource() -&gt; ()"
+                  moduleName = "VKWeather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "177"
+                  endingLineNumber = "177"
+                  offsetFromSymbolStart = "912">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "241A1E5E-F4FC-420E-B223-F5D24E3497A4"
+            uuid = "CFD41300-AB74-41F6-A363-201516F52DF4"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "VKWeather/ViewModels/MainViewModel.swift"
+            filePath = "VKWeather/Views/Adapter/CollectionViewAdapter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
-            landmarkName = "mapForecastCellData()"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
+            landmarkName = "applyCurrentSnapshot(weather:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "241A1E5E-F4FC-420E-B223-F5D24E3497A4 - 4219a394435764e5"
+                  uuid = "CFD41300-AB74-41F6-A363-201516F52DF4 - a1f8159ee8a1cef0"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "VKWeather.MainViewModel.mapForecastCellData() -&gt; ()"
+                  symbolName = "closure #1 (VKWeather.CollectionViewAdapter.Cells) -&gt; () in VKWeather.CollectionViewAdapter.applySnapshot(weather: VKWeather.CurrentWeatherData) -&gt; ()"
                   moduleName = "VKWeather"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/ViewModels/MainViewModel.swift"
+                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "110"
-                  endingLineNumber = "110"
-                  offsetFromSymbolStart = "64">
+                  startingLineNumber = "94"
+                  endingLineNumber = "94"
+                  offsetFromSymbolStart = "92">
                </Location>
                <Location
-                  uuid = "241A1E5E-F4FC-420E-B223-F5D24E3497A4 - 6096876b00594c24"
+                  uuid = "CFD41300-AB74-41F6-A363-201516F52DF4 - a1f8159ee8a1c85e"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (VKWeather.Datum) -&gt; Swift.Optional&lt;()&gt; in VKWeather.MainViewModel.mapForecastCellData() -&gt; ()"
+                  symbolName = "closure #1 (VKWeather.CollectionViewAdapter.Cells) -&gt; () in VKWeather.CollectionViewAdapter.applySnapshot(weather: VKWeather.CurrentWeatherData) -&gt; ()"
                   moduleName = "VKWeather"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/ViewModels/MainViewModel.swift"
+                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "110"
-                  endingLineNumber = "110"
-                  offsetFromSymbolStart = "204">
+                  startingLineNumber = "76"
+                  endingLineNumber = "76"
+                  offsetFromSymbolStart = "92">
+               </Location>
+               <Location
+                  uuid = "CFD41300-AB74-41F6-A363-201516F52DF4 - ca5abd222540ac38"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (VKWeather.CollectionViewAdapter.Cells) -&gt; () in VKWeather.CollectionViewAdapter.applyCurrentSnapshot(weather: VKWeather.CurrentWeatherData) -&gt; ()"
+                  moduleName = "VKWeather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75"
+                  offsetFromSymbolStart = "92">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D8E6181E-033F-4190-BCE6-673BD21E463B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VKWeather/Views/Adapter/CollectionViewAdapter.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "applyCurrentSnapshot(weather:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "D8E6181E-033F-4190-BCE6-673BD21E463B - b7e9975d05aae8e1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VKWeather.CollectionViewAdapter.applySnapshot(weather: VKWeather.CurrentWeatherData) -&gt; ()"
+                  moduleName = "VKWeather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "97"
+                  endingLineNumber = "97"
+                  offsetFromSymbolStart = "580">
+               </Location>
+               <Location
+                  uuid = "D8E6181E-033F-4190-BCE6-673BD21E463B - b7e9975d05aaeeb3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VKWeather.CollectionViewAdapter.applySnapshot(weather: VKWeather.CurrentWeatherData) -&gt; ()"
+                  moduleName = "VKWeather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "79"
+                  endingLineNumber = "79"
+                  offsetFromSymbolStart = "580">
+               </Location>
+               <Location
+                  uuid = "D8E6181E-033F-4190-BCE6-673BD21E463B - b7e9975d05aaeeb3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VKWeather.CollectionViewAdapter.applySnapshot(weather: VKWeather.CurrentWeatherData) -&gt; ()"
+                  moduleName = "VKWeather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "79"
+                  endingLineNumber = "79"
+                  offsetFromSymbolStart = "572">
+               </Location>
+               <Location
+                  uuid = "D8E6181E-033F-4190-BCE6-673BD21E463B - ce676ead2158bc0b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VKWeather.CollectionViewAdapter.applyCurrentSnapshot(weather: VKWeather.CurrentWeatherData) -&gt; ()"
+                  moduleName = "VKWeather"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/danilkomarov/Desktop/Project/VKWeather/VKWeather/Views/Adapter/CollectionViewAdapter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "78"
+                  endingLineNumber = "78"
+                  offsetFromSymbolStart = "572">
                </Location>
             </Locations>
          </BreakpointContent>

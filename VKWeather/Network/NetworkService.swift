@@ -8,6 +8,7 @@
 import Foundation
 
 final class NetworkService {
+    
     private enum Constants {
         static let scheme = "https"
         static let host = "api.openweathermap.org"
@@ -62,7 +63,7 @@ final class NetworkService {
     func getCurrentWeather(lat: String?, lon: String?, complition: @escaping (Result<CurrentWeather, NetworkError>) -> Void) {
         let request = URLRequest(url: getURL(Constants.pathCurrentWeather, lat: lat, lon: lon), cachePolicy: URLRequest.CachePolicy.returnCacheDataElseLoad, timeoutInterval: Double.infinity)
         
-        URLSession.shared.dataTask(with: request) { data, _, error in
+        URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
             if error != nil {
                 complition(.failure(.urlError))
             }
@@ -83,11 +84,10 @@ final class NetworkService {
         
         let request = URLRequest(url: getForecastURL(Constants.pathForecast, lat: lat, lon: lon), cachePolicy: URLRequest.CachePolicy.returnCacheDataElseLoad, timeoutInterval: Double.infinity)
         
-        URLSession.shared.dataTask(with: request) { data, _, error in
+        URLSession.shared.dataTask(with: request) { [weak self] data, _, error in
             if error != nil {
                 complition(.failure(.urlError))
             }
-            
             else if let data = data {
                 do {
                     let result = try JSONDecoder().decode(ForecastWeather.self, from: data)
@@ -98,12 +98,6 @@ final class NetworkService {
             }
             
         } .resume()
-    }
-    
-    func getData(url: URL, complition: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        DispatchQueue.main.async {
-            URLSession.shared.dataTask(with: url, completionHandler: complition).resume()
-        }
     }
     
 }
