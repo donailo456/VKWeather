@@ -185,60 +185,6 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
 }
 
 extension MainViewModel: CLLocationManagerDelegate {
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        if !locations.isEmpty, currentLocation == nil {
-//            currentLocation = locations.first
-//            locationManager.stopUpdatingLocation()
-//            requestWeatherLocation()
-//        }
-//    }
-//    
-//    private func requestWeatherLocation() {
-//        guard let currentLocation = currentLocation else { return }
-//        
-//        let lon = currentLocation.coordinate.longitude
-//        let lat = currentLocation.coordinate.latitude
-//        
-//        
-//        geoCoder.reverseGeocodeLocation(currentLocation) { [weak self] placemarks, error in
-//            guard let placemark = placemarks?.first else {
-//                return
-//            }
-//            
-//            if let city = placemark.locality {
-//                self?.onCity?(city)
-//            }
-//        }
-//        
-//        
-//        getCurrentWeather(String(lat), String(lon))
-//        getForecastWeather(String(lat), String(lon))
-//    }
-//    
-//    func seacrhCoordinat(_ text: String) {
-//        let searchRequest = MKLocalSearch.Request()
-//        searchRequest.naturalLanguageQuery = text
-//        let search = MKLocalSearch(request: searchRequest)
-//        
-//        DispatchQueue.global().async {
-//            search.start { [weak self] response, error in
-//                guard let response = response else {
-//                    debugPrint("Error: \(error?.localizedDescription ?? "Unknown error")")
-//                    return
-//                }
-//                
-//                for item in response.mapItems {
-//                    debugPrint("coordinats: \(item.placemark.coordinate)")
-//                    let lat = String(item.placemark.coordinate.latitude)
-//                    let long = String(item.placemark.coordinate.longitude)
-//                    self?.onCity?(item.placemark.locality)
-//                    self?.getCurrentWeather(lat, long)
-//                    self?.getForecastWeather(lat, long)
-//                }
-//            }
-//        }
-//    }
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let currentLocation = locations.first {
             self.currentLocation = currentLocation
