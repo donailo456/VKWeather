@@ -23,4 +23,19 @@
         <attribute name="windDir" attributeType="String"/>
         <attribute name="windSpd" attributeType="String"/>
     </entity>
+    <entity name="WeatherDataNew" representedClassName="WeatherDataNew" syncable="YES">
+        <attribute name="clouds" optional="YES" attributeType="String"/>
+        <attribute name="date" attributeType="String"/>
+        <attribute name="humidity" optional="YES" attributeType="String"/>
+        <attribute name="parameters" optional="YES" attributeType="String"/>
+        <attribute name="pressure" optional="YES" attributeType="String"/>
+        <attribute name="temp" optional="YES" attributeType="String"/>
+        <attribute name="tempMax" optional="YES" attributeType="String"/>
+        <attribute name="tempMin" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="today" optional="YES" attributeType="String"/>
+        <attribute name="week" optional="YES" attributeType="String"/>
+        <attribute name="windDeg" optional="YES" attributeType="String"/>
+        <attribute name="windSpeed" optional="YES" attributeType="String"/>
+    </entity>
 </model>

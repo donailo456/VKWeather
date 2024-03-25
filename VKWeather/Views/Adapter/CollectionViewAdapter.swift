@@ -78,6 +78,7 @@ final class CollectionViewAdapter: NSObject {
         dataSource?.apply(snapshot, animatingDifferences: false)
     }
     
+    
     private func reload() {
         DispatchQueue.main.async {
             self.collectionView?.reloadData()
@@ -144,6 +145,7 @@ final class CollectionViewAdapter: NSObject {
             ),
         ]
     }
+    
     
     //MARK: Method for VC
     

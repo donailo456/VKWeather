@@ -69,19 +69,24 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     }
     
     private func mapDetailCellData() {
-        dataSource.map({
+        dataSource.map({ data in
+            guard let main = data.main, let weather = data.weather?.first else {
+                return
+            }
+            
             coreDataManager?.addCurrWeather(
-                temp: String(Int($0.main?.temp ?? 0.0)),
-                parameters: String($0.weather?[0].description ?? " ").prefix(1).uppercased() + String($0.weather?[0].description ?? " ").dropFirst(),
-                humidity: String(Int($0.main?.humidity ?? 0)),
-                tempMin: String(Int($0.main?.temp_min ?? 0)),
-                tempMax: String(Int($0.main?.temp_max ?? 0)),
-                pressure: String($0.main?.pressure ?? 0),
-                windSpeed: String($0.wind?.speed ?? 0.0),
-                windDeg: getArrowDirection(degrees: String($0.wind?.deg ?? 0)),
-                clouds: String($0.clouds?.all ?? 0),
+                temp: String(Int(main.temp ?? 0.0)),
+                parameters: String(weather.description ?? " ").prefix(1).uppercased() + String(weather.description ?? " ").dropFirst(),
+                humidity: String(Int(main.humidity ?? 0)),
+                tempMin: String(Int(main.temp_min ?? 0)),
+                tempMax: String(Int(main.temp_max ?? 0)),
+                pressure: String(main.pressure ?? 0),
+                windSpeed: String(data.wind?.speed ?? 0.0),
+                windDeg: getArrowDirection(degrees: String(data.wind?.deg ?? 0)),
+                clouds: String(data.clouds?.all ?? 0),
                 today: today()
-            )})
+            )
+        })
         
         self.onDataReloadCurr?(coreDataManager?.fetchData().first)
     }
